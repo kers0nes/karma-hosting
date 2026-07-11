@@ -1,4 +1,3 @@
-const requests = require('requests'); // Wait, we can use built-in fetch or standard HTTP/HTTPS in node, or install node-fetch/axios. Let's use standard node 'https' module, which requires zero npm imports and is extremely stable!
 const https = require('https');
 
 function callKersOne(scriptContent) {
@@ -60,16 +59,15 @@ function callKersOne(scriptContent) {
         if (res.statusCode === 200) {
           try {
             const data = JSON.parse(body);
-            // Structure: {"t":10,"i":0,"p":{"k":["result","error","context"],"v":[{"t":10,"i":1,"p":{"k":["obfuscated"],"v":[{"t":1,"s":"..."}]},"o":0}, ...]}}
             const resultNode = data.p.v[0];
             const obfuscatedNode = resultNode.p.v[0];
             const obfuscatedScript = obfuscatedNode.s;
             resolve(obfuscatedScript);
           } catch (e) {
-            reject(new Error(`Failed to parse Kers0ne response: ${e.message}\nRaw body: ${body.substring(0, 500)}`));
+            reject(new Error(`Failed to parse Kers0ne response: ${e.message}`));
           }
         } else {
-          reject(new Error(`Kers0ne returned status ${res.statusCode}: ${body.substring(0, 500)}`));
+          reject(new Error(`Kers0ne returned status ${res.statusCode}`));
         }
       });
     });
@@ -84,10 +82,6 @@ function callKersOne(scriptContent) {
 }
 
 function injectAntiDeobfuscation(obfuscatedScript) {
-  // Let's design our advanced Lua anti-deobfuscator code that replaces the simple 'local f=loadstring or load' in the Kers0ne output.
-  // It intercepts any attempts to hook print, loadstring, load, table.concat, or inspect environment, and feeds the hook 'print("skidder")'
-  // and crashes/enters an infinite loop printing 'skidder' to prevent deobfuscation.
-  
   const antiDeobfCode = `
 	-- Hook detection and anti-deobfuscator code by Karmaforges
 	local is_hooked = false
@@ -121,20 +115,17 @@ function injectAntiDeobfuscation(obfuscatedScript) {
 	
 	-- Hook check 3: Verify environment consistency
 	if getfenv and getfenv(0) ~= getfenv(1) then
-		-- Some deobfuscators sandbox inside custom environment
 		is_hooked = true
 	end
 
 	local f = function(src)
 		if is_hooked then
-			-- Repeatedly print skidder and run print('skidder')
 			spawn(function()
 				while true do
 					print("skidder")
 					task.wait(0.2)
 				end
 			end)
-			-- Return a payload that prints skidder and blocks execution of real code
 			return real_load("while true do print('skidder') task.wait(1) end")
 		else
 			return real_load(src)
@@ -142,14 +133,11 @@ function injectAntiDeobfuscation(obfuscatedScript) {
 	end
   `;
 
-  // Standard Kers0ne loaders contain: 'local f=loadstring or load'
-  // Let's use a regex replace to be completely safe against minor space changes
   const targetPattern = /local\s+f\s*=\s*loadstring\s+or\s+load/;
   
   if (targetPattern.test(obfuscatedScript)) {
     return obfuscatedScript.replace(targetPattern, antiDeobfCode);
   } else {
-    // If we can't find the exact loadstring line, wrap the entire script in our anti-deobfuscation shield
     return `--[[
 	Protected By Karmaforges Anti-Deobfuscation Shield
 ]]
@@ -184,17 +172,12 @@ async function obfuscateScript(scriptContent) {
     return fullyProtected;
   } catch (e) {
     console.error('Error during script obfuscation:', e);
-    // If Kers0ne is down or fails, we can fall back to our own secure XOR loader with integrated anti-deobfuscator!
-    // This is incredibly robust as it means their script hub is 100% reliable even if the external API has an issue.
     return fallbackObfuscator(scriptContent);
   }
 }
 
 function fallbackObfuscator(scriptContent) {
-  // Our own fallback obfuscation (XOR encoding + Anti-deobf + VM-style execution loader)
   const key = Array.from({length: 16}, () => Math.floor(Math.random() * 256));
-  
-  // Encrypt script content
   const bytes = Buffer.from(scriptContent, 'utf8');
   const encryptedBytes = [];
   for (let i = 0; i < bytes.length; i++) {
@@ -212,7 +195,6 @@ return(function(...)
 	local D="${dStr}"
 	local B,C=string.byte,string.char
 	
-	-- Anti-deobf
 	local is_hooked = false
 	local real_load = loadstring or load
 	if debug and debug.getinfo then
