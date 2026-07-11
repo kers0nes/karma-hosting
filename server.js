@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const db = require('./db');
 const { obfuscateScript } = require('./obfuscator');
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // Enable CORS for frontend hosting domains (like Cloudflare Pages)
 app.use(cors({
-  origin: true, // Allow any origin, or specify pages.dev domains
+  origin: true, 
   credentials: true
 }));
 
@@ -19,8 +20,9 @@ app.use(express.json());
 app.use(cookieParser('karmaforges_secret_session_token_123'));
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from 'public' directory
+// Serve static files from 'public' directory, and fallback to root directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // Helper: Get logged-in user from session/cookie or Authorization header
 function getSessionUser(req) {
@@ -435,7 +437,7 @@ app.post('/api/admin/owners', requireOwner, (req, res) => {
   const { email, username } = req.body;
   
   if (!email && !username) {
-    return res.status(400).json({ error: 'Please provide either an email or username to add to owners.' });
+    return res.status(400).json({ error: 'Please provide either an email or username.' });
   }
 
   const newOwner = db.addOwner(email, username);
@@ -495,9 +497,18 @@ app.post('/api/admin/users/:id/credits', requireOwner, (req, res) => {
 });
 
 
-// Catch-all route to serve index.html for frontend routing (Bypasses Express 5 string compiler)
+// Catch-all route to serve index.html for frontend routing
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  const publicPath = path.join(__dirname, 'public', 'index.html');
+  const rootPath = path.join(__dirname, 'index.html');
+  
+  if (fs.existsSync(publicPath)) {
+    res.sendFile(publicPath);
+  } else if (fs.existsSync(rootPath)) {
+    res.sendFile(rootPath);
+  } else {
+    res.status(404).send('index.html not found in public/ or root directory.');
+  }
 });
 
 // Start Server
