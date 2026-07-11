@@ -156,6 +156,8 @@ function requireOwner(req, res, next) {
 // --- DISCORD OAUTH CALLBACK ROUTE ---
 app.get('/api/auth/discord/callback', async (req, res) => {
   const code = req.query.code;
+  const state = req.query.state; // The original frontend origin passed during redirect!
+  
   if (!code) {
     return res.redirect('/?error=oauth_failed');
   }
@@ -232,11 +234,15 @@ app.get('/api/auth/discord/callback', async (req, res) => {
     // Clear referred_by cookie
     res.clearCookie('referred_by');
 
-    // Sign in the user
+    // Sign in the user locally
     res.cookie('auth_token', user.id, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true });
 
-    // Redirect to dashboard with token parameter as fallback for separate frontend hosts
-    res.redirect(`/?token=${user.id}`);
+    // SECURE CROSS-DOMAIN OAUTH REDIRECT: Redirects back to their Cloudflare Pages domain with the token!
+    if (state && (state.startsWith('http://') || state.startsWith('https://'))) {
+      res.redirect(`${state.replace(/\/$/, '')}/?token=${user.id}`);
+    } else {
+      res.redirect(`/?token=${user.id}`);
+    }
   } catch (err) {
     console.error('Discord OAuth error:', err);
     res.redirect('/?error=internal_oauth_error');
