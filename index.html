@@ -1355,9 +1355,13 @@
       }
     };
 
-    // Centralized API Fetch Helper (Supports cross-domain hosting)
+    // Centralized API Fetch Helper (Supports relative paths on same domain to bypass CORS/SSL issues!)
     async function apiFetch(path, options = {}) {
-      const backendUrl = localStorage.getItem('karma_backend_url') || BACKEND_URL;
+      const currentOrigin = window.location.origin;
+      // If we are on the Render backend domain, use relative path!
+      const useRelative = window.location.host.includes('onrender.com') || window.location.host.includes('localhost');
+      
+      const backendUrl = useRelative ? '' : (localStorage.getItem('karma_backend_url') || BACKEND_URL);
       const fullUrl = `${backendUrl.replace(/\/$/, '')}${path}`;
       
       options.headers = options.headers || {};
@@ -1426,55 +1430,61 @@
     async function checkActiveSession() {
       const statusDot = document.getElementById('backend-status-dot');
       const statusText = document.getElementById('backend-status-text');
+      const previewBanner = document.getElementById('preview-mode-banner');
 
-      try {
-        const response = await apiFetch('/api/auth/session');
-        const data = await response.json();
-        
-        statusDot.classList.add('active');
-        statusText.textContent = "Production Cloud Node Active";
+      const maxAttempts = 6;
+      let attempt = 0;
 
-        if (data.loggedIn) {
-          appState.user = data.user;
-          appState.isMockMode = false;
-          document.getElementById('preview-mode-banner').style.display = 'none';
-          
-          updateAuthUI();
-          
-          // Navigate first to make sure they get out of the home page instantly!
-          navigateTo('dashboard');
-          showToast('Connected to Karma Lua Hosting Cloud Node', 'success');
-          
-          // Fetch additional data in safe separate try-catches so failures don't break login
-          try {
-            await fetchScripts();
-          } catch (e) {
-            console.error('Error fetching scripts:', e);
-          }
-          
-          try {
-            await fetchKeys();
-          } catch (e) {
-            console.error('Error fetching keys:', e);
-          }
-          
-          if (appState.user.isOwner) {
-            try {
-              await fetchAdminData();
-            } catch (e) {
-              console.error('Error fetching admin data:', e);
-            }
-          }
-        } else {
-          appState.isMockMode = false;
-          document.getElementById('preview-mode-banner').style.display = 'none';
-          updateAuthUI();
+      while (attempt < maxAttempts) {
+        attempt++;
+        if (attempt > 1) {
+          statusText.textContent = `Waking up Cloud Node (Attempt ${attempt}/${maxAttempts})...`;
+          // Wait 5 seconds before retrying
+          await new Promise(resolve => setTimeout(resolve, 5000));
         }
-      } catch (err) {
-        statusDot.classList.remove('active');
-        statusText.textContent = "Offline/Mock Environment";
-        enableMockMode();
+
+        try {
+          const response = await apiFetch('/api/auth/session');
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          
+          const data = await response.json();
+          
+          // Connection Succeeded!
+          statusDot.classList.add('active');
+          statusText.textContent = "Production Cloud Node Active";
+          appState.isMockMode = false;
+          previewBanner.style.display = 'none';
+
+          if (data.loggedIn) {
+            appState.user = data.user;
+            updateAuthUI();
+            
+            // Navigate first to make sure they get out of the home page instantly!
+            navigateTo('dashboard');
+            showToast('Connected to Karma Lua Hosting Cloud Node', 'success');
+            
+            // Fetch additional data safely
+            try { await fetchScripts(); } catch (e) {}
+            try { await fetchKeys(); } catch (e) {}
+            if (appState.user.isOwner) {
+              try { await fetchAdminData(); } catch (e) {}
+            }
+          } else {
+            updateAuthUI();
+          }
+          return; // Exit function on success!
+
+        } catch (err) {
+          console.error(`Connection attempt ${attempt} failed:`, err);
+        }
       }
+
+      // If we exhausted all attempts, show Offline Mock Mode
+      statusDot.classList.remove('active');
+      statusText.textContent = "Cloud Node Unreachable";
+      enableMockMode();
     }
 
     function checkReferralCookie() {
@@ -2065,7 +2075,7 @@
     }
 
     function closeAuthModal(e) {
-      // Bypassed as we are using direct Discord OAuth
+      // Bypassed
     }
 
     // --- OWNERS (ADMIN) DASHBOARD ---
