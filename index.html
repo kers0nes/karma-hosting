@@ -1140,7 +1140,7 @@
 
     <!-- VIEW: KEYS (LICENSING PANEL - NEW FEATURE!) -->
     <div id="page-keys" class="view-page">
-      <div style="display: grid; grid-template-columns: 1fr 340px; gap: 32px;">
+      <div class="dashboard-grid">
         <!-- Left: Active keys -->
         <div class="card" style="padding: 24px;">
           <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Active Whitelist Licenses</h3>
@@ -1355,7 +1355,7 @@
       }
     };
 
-    // Centralized API Fetch Helper
+    // Centralized API Fetch Helper (Supports cross-domain hosting)
     async function apiFetch(path, options = {}) {
       const backendUrl = localStorage.getItem('karma_backend_url') || BACKEND_URL;
       const fullUrl = `${backendUrl.replace(/\/$/, '')}${path}`;
@@ -1377,14 +1377,13 @@
     // Trigger Discord OAuth Redirection (Faulmor Style login!)
     function redirectToDiscordAuth() {
       if (appState.isMockMode) {
-        // If local offline preview, mock login instantly!
         mockDiscordLogin();
         return;
       }
       
       const currentOrigin = window.location.origin;
       const redirectUri = `${currentOrigin}/api/auth/discord/callback`;
-      const authUrl = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify+email`;
+      const authUrl = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify+email&state=${encodeURIComponent(currentOrigin)}`;
       
       window.location.href = authUrl;
     }
@@ -1441,13 +1440,31 @@
           document.getElementById('preview-mode-banner').style.display = 'none';
           
           updateAuthUI();
-          await fetchScripts();
-          await fetchKeys();
-          if (appState.user.isOwner) {
-            await fetchAdminData();
-          }
-          showToast('Connected to Karma Lua Hosting Cloud Node', 'success');
+          
+          // Navigate first to make sure they get out of the home page instantly!
           navigateTo('dashboard');
+          showToast('Connected to Karma Lua Hosting Cloud Node', 'success');
+          
+          // Fetch additional data in safe separate try-catches so failures don't break login
+          try {
+            await fetchScripts();
+          } catch (e) {
+            console.error('Error fetching scripts:', e);
+          }
+          
+          try {
+            await fetchKeys();
+          } catch (e) {
+            console.error('Error fetching keys:', e);
+          }
+          
+          if (appState.user.isOwner) {
+            try {
+              await fetchAdminData();
+            } catch (e) {
+              console.error('Error fetching admin data:', e);
+            }
+          }
         } else {
           appState.isMockMode = false;
           document.getElementById('preview-mode-banner').style.display = 'none';
@@ -1512,6 +1529,14 @@
     function scrollToFeatures(e) {
       e.preventDefault();
       document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleGetStarted() {
+      if (appState.user) {
+        navigateTo('dashboard');
+      } else {
+        redirectToDiscordAuth();
+      }
     }
 
     // --- MOCK MODE FOR IN-APP PREVIEWS ---
@@ -1645,7 +1670,7 @@
       select.innerHTML = appState.scripts.map(s => `<option value="${s.id}">${escapeHTML(s.name)}</option>`).join('');
     }
 
-    // --- WHITELIST LICENSING PANEL (NEW FEATURE!) ---
+    // --- WHITELIST LICENSING PANEL ---
     async function fetchKeys() {
       if (appState.isMockMode) {
         mockLoadKeys();
@@ -1673,9 +1698,6 @@
       container.innerHTML = appState.keys.map(k => {
         const isRevoked = k.status === 'revoked';
         const currentDomain = localStorage.getItem('karma_backend_url') || BACKEND_URL;
-        
-        // Loader loadstring syntax with safe locked key + hardware parameter!
-        const loaderSnippet = `loadstring(game:HttpGet("${currentDomain}/raw/${k.scriptId}?key=${k.keyString}&hwid=" .. game:GetService("RbxAnalyticsService"):GetClientId()))()`;
         
         return `
           <tr>
@@ -2037,73 +2059,14 @@
       showToast('Referral link copied', 'success');
     }
 
-    async function handleSignOut() {
-      if (appState.isMockMode) {
-        localStorage.removeItem('karma_mock_session');
-        appState.user = null;
-        updateAuthUI();
-        showToast('Signed out', 'info');
-        navigateTo('home');
-        return;
-      }
-
-      try {
-        const res = await apiFetch('/api/auth/signout', { method: 'POST' });
-        if (res.ok) {
-          localStorage.removeItem('auth_token');
-          appState.user = null;
-          updateAuthUI();
-          showToast('Signed out', 'info');
-          navigateTo('home');
-        }
-      } catch (err) {
-        showToast('Network error on logout', 'error');
-      }
+    // --- AUTHENTICATION DIALOGS ---
+    function openAuthModal(mode) {
+      redirectToDiscordAuth();
     }
 
-    function updateAuthUI() {
-      const authButtons = document.getElementById('auth-buttons');
-      const userProfile = document.getElementById('user-profile');
-      
-      const linkDashboard = document.getElementById('link-dashboard');
-      const linkKeys = document.getElementById('link-keys');
-      const linkReferrals = document.getElementById('link-referrals');
-      const linkAdmin = document.getElementById('link-admin');
-
-      if (appState.user) {
-        authButtons.style.display = 'none';
-        userProfile.style.display = 'flex';
-        
-        document.getElementById('profile-username').textContent = appState.user.username;
-        document.getElementById('profile-credits').textContent = appState.user.credits || 0;
-
-        if (appState.user.avatar) {
-          const avImg = document.getElementById('profile-avatar');
-          avImg.src = appState.user.avatar;
-          avImg.style.display = 'block';
-        }
-
-        linkDashboard.style.display = 'block';
-        linkKeys.style.display = 'block';
-        linkReferrals.style.display = 'block';
-        
-        if (appState.user.isOwner) {
-          linkAdmin.style.display = 'block';
-        } else {
-          linkAdmin.style.display = 'none';
-        }
-      } else {
-        authButtons.style.display = 'flex';
-        userProfile.style.display = 'none';
-        document.getElementById('profile-avatar').style.display = 'none';
-
-        linkDashboard.style.display = 'none';
-        linkKeys.style.display = 'none';
-        linkReferrals.style.display = 'none';
-        linkAdmin.style.display = 'none';
-      }
+    function closeAuthModal(e) {
+      // Bypassed as we are using direct Discord OAuth
     }
-
 
     // --- OWNERS (ADMIN) DASHBOARD ---
     async function fetchAdminData() {
