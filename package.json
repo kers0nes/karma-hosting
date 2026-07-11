@@ -1,4 +1,11 @@
 {
+  "name": "karmaforges-hosting",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
@@ -6,12 +13,6 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "seroval": "^1.5.5"
-  },
-  "name": "user",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
