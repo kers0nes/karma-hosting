@@ -495,8 +495,8 @@ app.post('/api/admin/users/:id/credits', requireOwner, (req, res) => {
 });
 
 
-// Catch-all route to serve index.html for frontend routing
-app.get('/:path*', (req, res) => {
+// Catch-all route to serve index.html for frontend routing (Bypasses Express 5 string compiler)
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
