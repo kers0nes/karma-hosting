@@ -12,7 +12,8 @@ if (!fs.existsSync(DB_FILE)) {
       { id: 'ow-1', email: 'owner@karmaforges.com', username: 'owner', createdAt: new Date().toISOString() },
       { id: 'ow-2', email: 'admin@karmaforges.com', username: 'admin', createdAt: new Date().toISOString() }
     ],
-    referrals: []
+    referrals: [],
+    keys: [] // Add whitelisting keys collection
   };
   fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), 'utf8');
 }
@@ -28,7 +29,7 @@ class JSONDatabase {
       return JSON.parse(data);
     } catch (e) {
       console.error('Error reading DB:', e);
-      return { users: [], scripts: [], owners: [], referrals: [] };
+      return { users: [], scripts: [], owners: [], referrals: [], keys: [] };
     }
   }
 
@@ -59,6 +60,11 @@ class JSONDatabase {
   getUserByUsername(username) {
     if (!username) return null;
     return this.getUsers().find(u => u.username.toLowerCase() === username.toLowerCase());
+  }
+
+  getUserByDiscordId(discordId) {
+    if (!discordId) return null;
+    return this.getUsers().find(u => u.discordId === discordId);
   }
 
   addUser(user) {
@@ -121,6 +127,50 @@ class JSONDatabase {
     return false;
   }
 
+  // --- Whitelist Keys Table Operations ---
+  getKeys() {
+    const db = this.read();
+    return db.keys || [];
+  }
+
+  getKeysByUserId(userId) {
+    return this.getKeys().filter(k => k.userId === userId);
+  }
+
+  getKeyByString(keyString) {
+    return this.getKeys().find(k => k.keyString === keyString);
+  }
+
+  addKey(key) {
+    const db = this.read();
+    if (!db.keys) db.keys = [];
+    db.keys.push(key);
+    this.write(db);
+    return key;
+  }
+
+  updateKey(id, updates) {
+    const db = this.read();
+    const index = db.keys.findIndex(k => k.id === id);
+    if (index !== -1) {
+      db.keys[index] = { ...db.keys[index], ...updates };
+      this.write(db);
+      return db.keys[index];
+    }
+    return null;
+  }
+
+  deleteKey(id) {
+    const db = this.read();
+    const index = db.keys.findIndex(k => k.id === id);
+    if (index !== -1) {
+      db.keys.splice(index, 1);
+      this.write(db);
+      return true;
+    }
+    return false;
+  }
+
   // --- Owners Table Operations ---
   getOwners() {
     return this.read().owners;
@@ -131,7 +181,6 @@ class JSONDatabase {
     const cleanEmail = email ? email.toLowerCase() : null;
     const cleanUsername = username ? username.toLowerCase() : null;
 
-    // Check if already an owner
     const exists = db.owners.find(o => 
       (cleanEmail && o.email === cleanEmail) || 
       (cleanUsername && o.username === cleanUsername)
