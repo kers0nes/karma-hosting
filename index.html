@@ -1,0 +1,2594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karmaforges — Premium Luau Obfuscator & Cloud Hub</title>
+  <style>
+    /* Premium Cyberpunk / Dark Blue Sci-fi styling */
+    :root {
+      --bg-base: #050711;
+      --bg-surface: #0a0d20;
+      --bg-surface-glass: rgba(10, 13, 32, 0.75);
+      --border-color: rgba(0, 168, 255, 0.15);
+      --border-color-glow: rgba(0, 168, 255, 0.4);
+      --accent-blue: #00a8ff;
+      --accent-neon: #00f0ff;
+      --accent-dark: #0055ff;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 85, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-blue);
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(5, 7, 17, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
+    }
+
+    .logo span {
+      color: var(--accent-blue);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.2s, text-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--accent-neon);
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-blue) 100%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 85, 255, 0.3);
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 168, 255, 0.5);
+      background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-neon) 100%);
+    }
+
+    .btn-secondary {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid var(--border-color);
+      box-shadow: none;
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(30, 41, 59, 0.8);
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 10px rgba(0, 168, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* Notification Banner */
+    .banner {
+      background: linear-gradient(90deg, #1e1b4b 0%, #0c4a6e 100%);
+      border-bottom: 1px solid var(--border-color-glow);
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--accent-neon);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      z-index: 101;
+    }
+
+    .banner svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--accent-neon);
+    }
+
+    /* Main Grid & Content Pages */
+    .view-page {
+      display: none;
+      padding: 40px 0;
+    }
+
+    .view-page.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Home Hero Page */
+    .hero-section {
+      text-align: center;
+      padding: 60px 0;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      background: rgba(0, 168, 255, 0.1);
+      border: 1px solid var(--border-color);
+      color: var(--accent-neon);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      background: linear-gradient(120deg, #ffffff 30%, #a5f3fc 70%, var(--accent-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 35px auto;
+    }
+
+    /* Backend Connection Card */
+    .backend-connect-card {
+      background: linear-gradient(135deg, rgba(0, 85, 255, 0.08) 0%, rgba(0, 240, 255, 0.03) 100%);
+      border: 1px solid var(--accent-blue);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 40px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 0 20px rgba(0, 168, 255, 0.1);
+    }
+
+    .backend-connect-info {
+      flex-grow: 1;
+    }
+
+    .backend-connect-form {
+      display: flex;
+      gap: 10px;
+      min-width: 400px;
+    }
+
+    @media (max-width: 800px) {
+      .backend-connect-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .backend-connect-form {
+        min-width: 100%;
+      }
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+      margin-top: 50px;
+    }
+
+    .card {
+      background: var(--bg-surface-glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 30px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-neon));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 168, 255, 0.1);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      background: rgba(0, 168, 255, 0.1);
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      border: 1px solid rgba(0, 168, 255, 0.2);
+    }
+
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent-blue);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Dashboard & Code Editor */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .storage-indicator {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: rgba(30, 41, 59, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .storage-bar-wrap {
+      background: #1e293b;
+      height: 8px;
+      border-radius: 4px;
+      flex-grow: 1;
+      margin: 0 15px;
+      overflow: hidden;
+    }
+
+    .storage-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-neon));
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    /* Editor Wrapper */
+    .editor-wrap {
+      background: #040612;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .editor-header {
+      background: rgba(10, 13, 32, 0.9);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .editor-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .editor-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-r { background: #ff5f56; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+
+    .editor-lang {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .editor-body {
+      display: grid;
+      grid-template-columns: 45px 1fr;
+      min-height: 300px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 14px;
+    }
+
+    .editor-lines {
+      background: rgba(5, 7, 17, 0.5);
+      color: rgba(148, 163, 184, 0.3);
+      padding: 15px 0;
+      text-align: right;
+      padding-right: 12px;
+      user-select: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .editor-lines span {
+      display: block;
+      height: 21px;
+    }
+
+    .editor-textarea {
+      background: transparent;
+      border: none;
+      resize: vertical;
+      color: #9cdcfe;
+      padding: 15px;
+      width: 100%;
+      height: 100%;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      outline: none;
+      line-height: 21px;
+    }
+
+    /* Drag & Drop Overlay */
+    .drag-drop-zone {
+      border: 2px dashed rgba(0, 168, 255, 0.3);
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      background: rgba(0, 168, 255, 0.02);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .drag-drop-zone:hover, .drag-drop-zone.dragover {
+      border-color: var(--accent-neon);
+      background: rgba(0, 240, 255, 0.05);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+    }
+
+    .drag-drop-zone svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--accent-blue);
+      margin-bottom: 10px;
+    }
+
+    /* Input Fields */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      background: #090c1a;
+      border: 1px solid var(--border-color);
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
+      width: 100%;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 10px rgba(0, 168, 255, 0.25);
+    }
+
+    /* Toggle Switch */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      background: rgba(30, 41, 59, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .toggle-label-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toggle-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .toggle-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #1e293b;
+      transition: .3s;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent-dark);
+      box-shadow: 0 0 10px rgba(0, 85, 255, 0.5);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+      background-color: var(--accent-neon);
+    }
+
+    /* Script Listing */
+    .script-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .script-item {
+      background: rgba(10, 13, 32, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+
+    .script-item:hover {
+      border-color: var(--accent-blue);
+    }
+
+    .script-info {
+      flex-grow: 1;
+      margin-right: 20px;
+    }
+
+    .script-name {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+
+    .script-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .badge-obf {
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--accent-neon);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-raw {
+      background: rgba(148, 163, 184, 0.1);
+      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .script-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Referrals Dashboard */
+    .ref-header-card {
+      background: radial-gradient(circle at top right, rgba(0, 240, 255, 0.08), rgba(0, 85, 255, 0.03)), var(--bg-surface-glass);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 40px rgba(0, 168, 255, 0.05);
+    }
+
+    .ref-link-box {
+      background: #050711;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 600px;
+      margin: 25px auto 0 auto;
+    }
+
+    .ref-url {
+      color: var(--accent-neon);
+      font-family: monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      white-space: nowrap;
+      margin-right: 15px;
+      flex-grow: 1;
+      text-align: left;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-box {
+      background: rgba(10, 13, 32, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent-blue);
+      text-shadow: 0 0 10px rgba(0, 168, 255, 0.3);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    /* Admin Console */
+    .admin-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 25px;
+      gap: 15px;
+    }
+
+    .admin-tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+    }
+
+    .admin-tab.active {
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+
+    .admin-section {
+      display: none;
+    }
+
+    .admin-section.active {
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    th {
+      background: rgba(10, 13, 32, 0.5);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    tr:hover td {
+      background: rgba(30, 41, 59, 0.1);
+    }
+
+    /* Modals & Forms */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color-glow);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 450px;
+      padding: 35px;
+      box-shadow: 0 10px 40px rgba(0, 168, 255, 0.2);
+      animation: modalSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalSlide {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .modal-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .modal-close {
+      float: right;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    /* Auth Banner inside Signup Modal */
+    .signup-invite-banner {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+      color: #34d399;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #0f172a;
+      border-left: 4px solid var(--accent-blue);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      font-size: 14px;
+      min-width: 250px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: toastIn 0.3s ease;
+    }
+
+    @keyframes toastIn {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast.success { border-left-color: var(--success); }
+    .toast.error { border-left-color: var(--error); }
+    .toast.warning { border-left-color: var(--warning); }
+
+    .toast-close {
+      cursor: pointer;
+      color: var(--text-muted);
+      margin-left: 15px;
+    }
+
+    /* Script View/Output Area */
+    .output-section {
+      background: #02040a;
+      border: 1px solid var(--border-color-glow);
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 25px;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .output-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--accent-neon);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .output-box {
+      background: #000000;
+      color: #9cdcfe;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      max-height: 250px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Loader */
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      border-top: 3px solid var(--accent-blue);
+      width: 18px;
+      height: 18px;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mock Mode Banner (Only shown if local backend is down) -->
+  <div id="preview-mode-banner" class="banner" style="display: none;">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    <span>⚡ <strong>Interactive Preview Mode:</strong> Play around offline, or enter a live backend URL below to activate cloud syncing!</span>
+  </div>
+
+  <!-- Referral Welcome Banner -->
+  <div id="referral-welcome-banner" class="banner" style="display: none; background: linear-gradient(90deg, #064e3b 0%, #065f46 100%);">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    <span id="referral-welcome-text">🎁 Sign up requested by your friend's name! Complete signup to receive 50 bonus credits.</span>
+  </div>
+
+  <header>
+    <div class="container nav-wrap">
+      <a href="#" class="logo" onclick="navigateTo('home')">Karma<span>forges</span></a>
+      
+      <div class="nav-links">
+        <a class="nav-link active" onclick="navigateTo('home')" id="link-home">Home</a>
+        <a class="nav-link" onclick="navigateTo('dashboard')" id="link-dashboard" style="display: none;">Dashboard</a>
+        <a class="nav-link" onclick="navigateTo('referrals')" id="link-referrals" style="display: none;">Referrals</a>
+        <a class="nav-link" onclick="navigateTo('admin')" id="link-admin" style="display: none; color: var(--accent-neon);">Owner Panel</a>
+        
+        <div id="auth-buttons">
+          <button class="btn btn-secondary btn-sm" onclick="openAuthModal('signin')">Sign In</button>
+          <button class="btn btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+        </div>
+        
+        <div id="user-profile" style="display: none; align-items: center; gap: 15px;">
+          <span style="font-size: 13px; font-weight: 500;">
+            👤 <span id="profile-username" style="color: var(--accent-blue);">User</span> 
+            (<span id="profile-credits" style="color: var(--accent-neon); font-weight: 700;">0</span> Credits)
+          </span>
+          <button class="btn btn-secondary btn-sm" onclick="handleSignOut()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- VIEW: HOME (LANDING) -->
+    <div id="page-home" class="view-page active">
+      <div class="hero-section">
+        <div class="hero-badge">🔒 LuaU Protection Platform</div>
+        <h1 class="hero-title">Secure & Host Your Roblox<br>Scripts In The Cloud</h1>
+        <p class="hero-desc">Karmaforges provides premium, uncrackable Luau script hosting and obfuscation with native anti-deobfuscator defenses, instant file uploads, and a built-in owner dashboard.</p>
+        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px;">
+          <button class="btn btn-lg" onclick="handleGetStarted()">Get Started Instantly</button>
+          <a href="#features" class="btn btn-secondary btn-lg" onclick="scrollToFeatures(event)">Explore Features</a>
+        </div>
+
+        <!-- Cross-Domain Cloud Node Connection Portal -->
+        <div class="backend-connect-card" id="backend-connect-card">
+          <div class="backend-connect-info">
+            <h3 style="font-size: 16px; font-weight: 700; color: white; margin-bottom: 5px;">🔗 Live Backend Node Connection</h3>
+            <p style="font-size: 13px; color: var(--text-muted);">Hosted on a static provider (like Cloudflare Pages)? Paste your Render/Railway backend node URL here to sync databases, enable real registrations, and run active obfuscations!</p>
+          </div>
+          <div class="backend-connect-form">
+            <input type="text" id="backend-url-input" class="form-input" style="padding: 10px; font-size: 13px;" placeholder="https://karma-backend.onrender.com">
+            <button class="btn btn-sm" style="flex-shrink: 0;" onclick="connectToCustomBackend()">Connect Node</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="features" style="padding-top: 20px;">
+        <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 10px;">Why Developers Use Karmaforges</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">The industry-standard hub designed by scripters, for scripters.</p>
+        
+        <div class="features-grid">
+          <!-- Feature 1 -->
+          <div class="card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.79 3-4 3z"/></svg>
+            </div>
+            <h3 class="card-title">Cloud Script Storage</h3>
+            <p class="card-desc">Tired of copy-pasting every time? Store up to 20 raw scripts securely in your cloud vault. Drag-and-drop your .lua or .txt files directly!</p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+            <h3 class="card-title">Kers0ne Obfuscator</h3>
+            <p class="card-desc">Equipped with standard register shuffling and VM Lift encryption. Converts control flow into unreadable bytecode dispatch tables instantly.</p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
+            <h3 class="card-title">Uncrackable Skid Protection</h3>
+            <p class="card-desc">Advanced anti-deobfuscator locks! If anyone tries to hook or extract your scripts, our wrapper detects it, blocks extraction, and spams print("skidder") forever.</p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.4z"/></svg>
+            </div>
+            <h3 class="card-title">Adapting Loadstrings</h3>
+            <p class="card-desc">Moving to a different domain? Karmaforges loadstrings automatically adapt! Copy once and it works seamlessly on any domain, forever.</p>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+            <h3 class="card-title">Sleek Referral System</h3>
+            <p class="card-desc">Share your personal invite link. Invite a friend, they will see "Sign up requested by your username" on signup, awarding them 50 credits and you 100 credits!</p>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.49 10 10-4.49 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm3 9H9v-2h6v2z"/></svg>
+            </div>
+            <h3 class="card-title">Secure Raw API</h3>
+            <p class="card-desc">No more scraping. Direct raw links serve your protected scripts straight to Roblox clients. Web browsers trying to inspect will be automatically redirected to the homepage.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: DASHBOARD -->
+    <div id="page-dashboard" class="view-page">
+      <div class="dashboard-grid">
+        <!-- Left: Upload/Edit Script Panel -->
+        <div>
+          <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 20px;" id="editor-panel-title">Upload a New Script</h2>
+          
+          <!-- Drag & Drop Zone -->
+          <div class="drag-drop-zone" id="drop-zone" onclick="triggerFileInput()">
+            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+            <p id="drop-zone-text"><strong>Drag & Drop your .lua / .luau / .txt file here</strong> or click to browse</p>
+            <input type="file" id="file-input" style="display: none;" accept=".lua,.luau,.txt" onchange="handleFileSelect(event)">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Script Name</label>
+            <input type="text" id="script-name" class="form-input" placeholder="e.g. Murder Mystery 2 Silent Aim">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description (Optional)</label>
+            <input type="text" id="script-desc" class="form-input" placeholder="e.g. Silent aim, wallbang and teleport features">
+          </div>
+
+          <div class="editor-wrap">
+            <div class="editor-header">
+              <div class="editor-dots">
+                <div class="editor-dot dot-r"></div>
+                <div class="editor-dot dot-y"></div>
+                <div class="editor-dot dot-g"></div>
+              </div>
+              <span class="editor-lang">luau editor</span>
+            </div>
+            <div class="editor-body">
+              <div class="editor-lines" id="editor-line-numbers">
+                <span>1</span>
+              </div>
+              <textarea id="script-code" class="editor-textarea" placeholder="-- Paste or write your Roblox Lua code here..." oninput="updateLineNumbers()" onscroll="syncScroll()"></textarea>
+            </div>
+          </div>
+
+          <div class="toggle-wrap">
+            <div class="toggle-label-wrap">
+              <span class="toggle-title">Enable Obfuscate</span>
+              <span class="toggle-desc">Encrypt code via Kers0ne + Anti-Deobfuscation security layer</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="enable-obfuscate" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 15px;">
+            <button class="btn" id="btn-save-script" onclick="handleSaveScript()">
+              <span>⚡ Save & Host Script</span>
+            </button>
+            <button class="btn btn-secondary" id="btn-cancel-edit" onclick="resetEditor()" style="display: none;">Cancel Edit</button>
+          </div>
+
+          <!-- Script Output Box (shown after upload/edit) -->
+          <div id="output-section" class="output-section" style="display: none;">
+            <div class="output-header">
+              <span class="output-title">obfuscation result</span>
+              <button class="btn btn-secondary btn-sm" onclick="copyOutputCode()">Copy Output</button>
+            </div>
+            <div class="output-box" id="output-code-box"></div>
+          </div>
+        </div>
+
+        <!-- Right: Storage List -->
+        <div>
+          <div style="position: sticky; top: 100px;">
+            <div class="card" style="padding: 20px; margin-bottom: 20px;">
+              <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">Script Storage</h3>
+              <div class="storage-indicator">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 12px; color: var(--text-muted);">Used Storage</span>
+                  <span style="font-size: 18px; font-weight: 800;" id="storage-fraction">0 / 20 Scripts</span>
+                </div>
+                <div class="storage-bar-wrap">
+                  <div class="storage-bar" id="storage-bar"></div>
+                </div>
+              </div>
+              <p style="font-size: 12px; color: var(--text-muted);">Each user accounts gets 20 free slots. Contact owners for limits upgrade.</p>
+            </div>
+
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 15px;">Your Stored Scripts</h3>
+            <div class="script-list" id="my-scripts">
+              <!-- Dynamically populated -->
+              <div style="text-align: center; color: var(--text-muted); padding: 30px; border: 1px dashed var(--border-color); border-radius: 8px;">
+                You haven't uploaded any scripts yet.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: REFERRALS -->
+    <div id="page-referrals" class="view-page">
+      <div class="ref-header-card">
+        <span class="hero-badge">Earn Platform Credits</span>
+        <h2 style="font-size: 32px; font-weight: 900; margin-bottom: 15px;">Karmaforges Referral Program</h2>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Invite other developers or friends to secure their scripts with Karmaforges. They get bonus start credits, and you earn premium credits for every active invite!</p>
+        
+        <div class="ref-link-box">
+          <div class="ref-url" id="referral-link">http://localhost:3000/invite/username</div>
+          <button class="btn btn-sm" onclick="copyReferralLink()">Copy Invite Link</button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-val" id="ref-stat-count">0</div>
+          <div class="stat-label">Friends Registered</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="ref-stat-credits">0</div>
+          <div class="stat-label">Credits Earned</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="ref-stat-bonus">+50</div>
+          <div class="stat-label">Invited Friend Bonus</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="ref-stat-payout">+100</div>
+          <div class="stat-label">Your Referral Payout</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 20px;">How It Works</h3>
+        <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 15px; font-size: 14px; color: var(--text-main);">
+          <li><strong>Copy and Share:</strong> Copy your unique referral URL above and share it with your developer friends.</li>
+          <li><strong>Sign Up Request Display:</strong> When your friend clicks the link, they will see a beautiful banner at the top of Karmaforges saying <em>"Sign up requested by [Your Username]"</em>.</li>
+          <li><strong>Bonus Distribution:</strong> Upon successfully creating an account, your friend receives <strong>50 credits</strong>, and your account is credited with <strong>100 credits</strong> instantly!</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- VIEW: ADMIN DASHBOARD -->
+    <div id="page-admin" class="view-page">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+        <h2 style="font-size: 28px; font-weight: 800;">Owner Control Center</h2>
+        <span style="font-size: 11px; background: rgba(0, 168, 255, 0.1); border: 1px solid var(--accent-blue); padding: 4px 10px; border-radius: 12px; color: var(--accent-neon);">API Connected</span>
+      </div>
+      <p style="color: var(--text-muted); margin-bottom: 30px;">Platform management console. Owner access only.</p>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-val" id="admin-stat-users">0</div>
+          <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="admin-stat-scripts">0</div>
+          <div class="stat-label">Total Scripts Hosted</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="admin-stat-owners">0</div>
+          <div class="stat-label">Registered Owners</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="admin-stat-referrals">0</div>
+          <div class="stat-label">Referrals Completed</div>
+        </div>
+      </div>
+
+      <div class="admin-tabs">
+        <div class="admin-tab active" id="tab-btn-users" onclick="switchAdminTab('users')">Manage Users & Credits</div>
+        <div class="admin-tab" id="tab-btn-owners" onclick="switchAdminTab('owners')">Manage Owners List</div>
+      </div>
+
+      <!-- SECTION: ADMIN USERS -->
+      <div class="admin-section active" id="admin-sec-users">
+        <div class="card" style="padding: 20px;">
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 15px;">User Database</h3>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Credits Balance</th>
+                  <th>Referred By</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-table">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: ADMIN OWNERS -->
+      <div class="admin-section" id="admin-sec-owners">
+        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 30px;">
+          <!-- Left: Owners list -->
+          <div class="card" style="padding: 20px;">
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 15px;">Active Platform Owners</h3>
+            <div style="overflow-x: auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Email Target</th>
+                    <th>Username Target</th>
+                    <th>Date Added</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-owners-table">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Right: Add owner form -->
+          <div class="card" style="padding: 20px;">
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 15px;">Grant Owner Permission</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Enter your friend's email or username. Once their credentials are added, they can access the full admin dashboard and use all owner tools.</p>
+            
+            <div class="form-group">
+              <label class="form-label">Email (Optional)</label>
+              <input type="email" id="new-owner-email" class="form-input" placeholder="friend@karmaforges.com">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Username (Optional)</label>
+              <input type="text" id="new-owner-username" class="form-input" placeholder="FriendUsername">
+            </div>
+
+            <button class="btn" style="width: 100%;" onclick="handleAddOwner()">
+              <span>👑 Add to Owner List</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="auth-modal" onclick="closeAuthModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <span class="modal-close" onclick="closeAuthModal()">✕</span>
+      <h2 class="modal-title" id="auth-modal-title">Sign In</h2>
+      <p class="modal-desc" id="auth-modal-desc">Sign in to start uploading and obfuscating your scripts.</p>
+
+      <!-- Referral banner in signup -->
+      <div class="signup-invite-banner" id="modal-referral-banner" style="display: none;">
+        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <span>Sign up requested by <strong id="modal-referral-username">friend</strong>!</span>
+      </div>
+
+      <!-- Sign In Fields -->
+      <div id="signin-fields">
+        <div class="form-group">
+          <label class="form-label">Email or Username</label>
+          <input type="text" id="signin-login" class="form-input" placeholder="owner@karmaforges.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="signin-password" class="form-input" placeholder="••••••••">
+        </div>
+        <button class="btn" style="width: 100%; margin-top: 10px;" id="btn-signin" onclick="submitSignIn()">
+          <span>Sign In</span>
+        </button>
+        <p style="text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-muted);">
+          Don't have an account? <a href="#" style="color: var(--accent-blue);" onclick="toggleAuthMode('signup')">Sign Up</a>
+        </p>
+      </div>
+
+      <!-- Sign Up Fields -->
+      <div id="signup-fields" style="display: none;">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" id="signup-username" class="form-input" placeholder="karma_master">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="signup-email" class="form-input" placeholder="coder@karmaforges.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="signup-password" class="form-input" placeholder="••••••••">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Referral Code (Optional)</label>
+          <input type="text" id="signup-referral" class="form-input" placeholder="e.g. owner">
+        </div>
+        <button class="btn" style="width: 100%; margin-top: 10px;" id="btn-signup" onclick="submitSignUp()">
+          <span>Create Account</span>
+        </button>
+        <p style="text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-muted);">
+          Already have an account? <a href="#" style="color: var(--accent-blue);" onclick="toggleAuthMode('signin')">Sign In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    // Front-end State & Router
+    let appState = {
+      isMockMode: false,
+      user: null, // Logged in user details
+      scripts: [],
+      editingScriptId: null,
+      admin: {
+        stats: null,
+        users: [],
+        owners: []
+      }
+    };
+
+    // Centralized API Fetch Helper (Supports cross-domain hosting e.g. Cloudflare Pages + Render Node)
+    async function apiFetch(path, options = {}) {
+      const backendUrl = localStorage.getItem('karma_backend_url') || '';
+      const fullUrl = backendUrl ? `${backendUrl.replace(/\/$/, '')}${path}` : path;
+      
+      // Merge headers
+      options.headers = options.headers || {};
+      if (!(options.body instanceof FormData)) {
+        options.headers['Content-Type'] = options.headers['Content-Type'] || 'application/json';
+      }
+      
+      // Inject Authorization Header token
+      const token = localStorage.getItem('auth_token');
+      if (token) {
+        options.headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      // Enable sending cookies in cross-origin requests
+      options.credentials = 'include';
+
+      return fetch(fullUrl, options);
+    }
+
+    // Initialize Page load
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Check referral cookie from URL
+      checkReferralCookie();
+
+      // Set backend input text if cached
+      const savedBackend = localStorage.getItem('karma_backend_url');
+      if (savedBackend) {
+        document.getElementById('backend-url-input').value = savedBackend;
+      }
+
+      // Try checking session
+      await checkActiveSession();
+
+      // Read state
+      updateLineNumbers();
+    });
+
+    async function checkActiveSession() {
+      try {
+        const response = await apiFetch('/api/auth/session');
+        const data = await response.json();
+        
+        if (data.loggedIn) {
+          appState.user = data.user;
+          appState.isMockMode = false;
+          document.getElementById('preview-mode-banner').style.display = 'none';
+          
+          updateAuthUI();
+          await fetchScripts();
+          if (appState.user.isOwner) {
+            await fetchAdminData();
+          }
+          showToast('Connected to Live Karmaforges Node', 'success');
+        } else {
+          // If response is valid but not logged in, we are connected to a real server!
+          appState.isMockMode = false;
+          document.getElementById('preview-mode-banner').style.display = 'none';
+          updateAuthUI();
+        }
+      } catch (err) {
+        // Fallback to fully functional Mock Mode inside the Arena offline previewer or Pages site before connect
+        enableMockMode();
+      }
+    }
+
+    // Dynamic Connection to Custom Backend (e.g. Render/Railway)
+    async function connectToCustomBackend() {
+      let backendUrl = document.getElementById('backend-url-input').value.trim();
+      if (!backendUrl) {
+        localStorage.removeItem('karma_backend_url');
+        showToast('Reset connection to local server.', 'info');
+        await checkActiveSession();
+        return;
+      }
+
+      // Ensure HTTP/HTTPS prefix
+      if (!backendUrl.startsWith('http://') && !backendUrl.startsWith('https://')) {
+        backendUrl = `https://${backendUrl}`;
+        document.getElementById('backend-url-input').value = backendUrl;
+      }
+
+      showToast('Connecting to Backend Node...', 'info');
+
+      try {
+        // Ping session route
+        const res = await fetch(`${backendUrl.replace(/\/$/, '')}/api/auth/session`);
+        if (res.ok) {
+          localStorage.setItem('karma_backend_url', backendUrl);
+          showToast('Successfully connected to Live Backend Node!', 'success');
+          await checkActiveSession();
+        } else {
+          showToast(`Error: Backend responded with status ${res.status}`, 'error');
+        }
+      } catch (err) {
+        showToast('Could not connect to that Backend URL. Ensure server is running and CORS is enabled!', 'error');
+      }
+    }
+
+    function checkReferralCookie() {
+      const cookies = document.cookie.split(';');
+      let referredBy = null;
+      for (let i = 0; i < cookies.length; i++) {
+        const c = cookies[i].trim();
+        if (c.startsWith('referred_by=')) {
+          referredBy = decodeURIComponent(c.substring('referred_by='.length));
+          break;
+        }
+      }
+
+      if (referredBy) {
+        // Display top requested banner
+        const refBanner = document.getElementById('referral-welcome-banner');
+        const refText = document.getElementById('referral-welcome-text');
+        refText.innerHTML = `🎁 Sign up requested by your friend <strong>${referredBy}</strong>! Complete signup to receive 50 bonus credits.`;
+        refBanner.style.display = 'flex';
+        
+        // Auto fill modal referral code
+        document.getElementById('signup-referral').value = referredBy;
+        document.getElementById('modal-referral-username').textContent = referredBy;
+        document.getElementById('modal-referral-banner').style.display = 'flex';
+      }
+    }
+
+    // Router Navigation
+    function navigateTo(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.view-page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.querySelectorAll('.nav-link').forEach(link => {
+        pageId === 'home' && link.id === 'link-home' ? link.classList.add('active') : link.classList.remove('active');
+      });
+
+      // Show requested page
+      const targetPage = document.getElementById(`page-${pageId}`);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
+
+      // Update navbar links active state
+      const navLink = document.getElementById(`link-${pageId}`);
+      if (navLink) {
+        navLink.classList.add('active');
+      }
+
+      // On navigation to specific dashboards, refresh data
+      if (pageId === 'dashboard') {
+        fetchScripts();
+      } else if (pageId === 'referrals') {
+        updateReferralsPage();
+      } else if (pageId === 'admin') {
+        fetchAdminData();
+      }
+    }
+
+    function scrollToFeatures(e) {
+      e.preventDefault();
+      document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleGetStarted() {
+      if (appState.user) {
+        navigateTo('dashboard');
+      } else {
+        openAuthModal('signup');
+      }
+    }
+
+    // --- MOCK MODE FOR IN-APP PREVIEWS ---
+    function enableMockMode() {
+      appState.isMockMode = true;
+      document.getElementById('preview-mode-banner').style.display = 'flex';
+      
+      // Initialize mock db in LocalStorage
+      if (!localStorage.getItem('karma_mock_users')) {
+        localStorage.setItem('karma_mock_users', JSON.stringify([
+          { id: 'ur-1', email: 'owner@karmaforges.com', username: 'owner', password: 'password', credits: 1250, referredBy: null, createdAt: new Date().toISOString() },
+          { id: 'ur-2', email: 'friend1@karmaforges.com', username: 'friend_one', password: 'password', credits: 250, referredBy: 'owner', createdAt: new Date().toISOString() }
+        ]));
+        localStorage.setItem('karma_mock_owners', JSON.stringify([
+          { id: 'ow-1', email: 'owner@karmaforges.com', username: 'owner', createdAt: new Date().toISOString() }
+        ]));
+        localStorage.setItem('karma_mock_scripts', JSON.stringify([
+          { id: 'sc-mock1', userId: 'ur-1', name: 'Blox Fruits Auto Farm', description: 'Auto quests, teleports and mob farms', code: "print('Blox Fruits Script Running!')", obfuscatedCode: "-- Obfuscated by Kers0ne\nprint('Blox Fruits Script Running!')", obfuscated: true, createdAt: new Date().toISOString() },
+          { id: 'sc-mock2', userId: 'ur-1', name: 'Fly & Speed Script', description: 'Bypass speed/flight kick detection', code: "print('Fly script active')", obfuscatedCode: "", obfuscated: false, createdAt: new Date().toISOString() }
+        ]));
+        localStorage.setItem('karma_mock_referrals', JSON.stringify([
+          { id: 'ref-1', referrerId: 'ur-1', referrerName: 'owner', referredId: 'ur-2', referredName: 'friend_one', creditsAwarded: 100, createdAt: new Date().toISOString() }
+        ]));
+      }
+
+      // Check if user is cached in local session
+      const cachedUserId = localStorage.getItem('karma_mock_session');
+      if (cachedUserId) {
+        const users = JSON.parse(localStorage.getItem('karma_mock_users'));
+        const user = users.find(u => u.id === cachedUserId);
+        if (user) {
+          appState.user = {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            credits: user.credits,
+            isOwner: checkIsMockOwner(user.email, user.username)
+          };
+          updateAuthUI();
+          mockLoadScripts();
+        }
+      }
+    }
+
+    function checkIsMockOwner(email, username) {
+      const owners = JSON.parse(localStorage.getItem('karma_mock_owners') || '[]');
+      return owners.some(o => 
+        (email && o.email.toLowerCase() === email.toLowerCase()) || 
+        (username && o.username.toLowerCase() === username.toLowerCase())
+      );
+    }
+
+    function mockLoadScripts() {
+      const allScripts = JSON.parse(localStorage.getItem('karma_mock_scripts') || '[]');
+      appState.scripts = allScripts.filter(s => s.userId === appState.user.id);
+      renderScripts();
+    }
+
+    // --- REAL / MOCK SCRIPTS LOADER ---
+    async function fetchScripts() {
+      if (appState.isMockMode) {
+        mockLoadScripts();
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/api/scripts');
+        if (res.ok) {
+          appState.scripts = await res.json();
+          renderScripts();
+        }
+      } catch (err) {
+        showToast('Error loading scripts from server', 'error');
+      }
+    }
+
+    function renderScripts() {
+      const container = document.getElementById('my-scripts');
+      
+      // Update storage status
+      const limit = 20;
+      const count = appState.scripts.length;
+      document.getElementById('storage-fraction').textContent = `${count} / ${limit} Scripts`;
+      
+      const percent = (count / limit) * 100;
+      const storageBar = document.getElementById('storage-bar');
+      storageBar.style.width = `${percent}%`;
+
+      if (percent >= 100) {
+        storageBar.style.background = 'var(--error)';
+      } else if (percent >= 80) {
+        storageBar.style.background = 'var(--warning)';
+      } else {
+        storageBar.style.background = 'linear-gradient(90deg, var(--accent-blue), var(--accent-neon))';
+      }
+
+      if (count === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; color: var(--text-muted); padding: 30px; border: 1px dashed var(--border-color); border-radius: 8px;">
+            You haven't uploaded any scripts yet.
+          </div>
+        `;
+        return;
+      }
+
+      // Render script elements
+      container.innerHTML = appState.scripts.map(s => {
+        const isObf = s.obfuscated;
+        const currentDomain = localStorage.getItem('karma_backend_url') || window.location.origin;
+        // Adapted Loadstring snippet (Uses either your backend host or window origin)
+        const loadstringSnippet = `loadstring(game:HttpGet("${currentDomain.replace(/\/$/, '')}/raw/${s.id}"))()`;
+        
+        return `
+          <div class="script-item">
+            <div class="script-info">
+              <div class="script-name">${escapeHTML(s.name)}</div>
+              <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 5px;">${escapeHTML(s.description || 'No description.')}</div>
+              <div class="script-meta">
+                <span class="${isObf ? 'badge-obf' : 'badge-raw'}">${isObf ? 'Obfuscated' : 'Raw Script'}</span>
+                <span>📅 ${new Date(s.createdAt).toLocaleDateString()}</span>
+              </div>
+            </div>
+            <div class="script-actions">
+              <button class="btn btn-secondary btn-sm" onclick="copyLoadstring('${s.id}')">Copy Loadstring</button>
+              <button class="btn btn-secondary btn-sm" onclick="startEditScript('${s.id}')">✏️</button>
+              <button class="btn btn-danger btn-sm" onclick="handleDeleteScript('${s.id}')">🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function copyLoadstring(scriptId) {
+      const currentDomain = localStorage.getItem('karma_backend_url') || window.location.origin;
+      const snippet = `loadstring(game:HttpGet("${currentDomain.replace(/\/$/, '')}/raw/${scriptId}"))()`;
+      navigator.clipboard.writeText(snippet);
+      showToast('Adapted Loadstring copied to clipboard!', 'success');
+    }
+
+    // --- UPLOAD / EDIT SCRIPT ---
+    async function handleSaveScript() {
+      const name = document.getElementById('script-name').value.trim();
+      const description = document.getElementById('script-desc').value.trim();
+      const code = document.getElementById('script-code').value;
+      const enableObfuscate = document.getElementById('enable-obfuscate').checked;
+
+      if (!name || !code) {
+        showToast('Script Name and Lua Code are required!', 'error');
+        return;
+      }
+
+      const saveBtn = document.getElementById('btn-save-script');
+      const originalText = saveBtn.innerHTML;
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<span class="spinner"></span> Obfuscating & Saving...`;
+
+      if (appState.isMockMode) {
+        // Simulate Obfuscation call delay
+        setTimeout(() => {
+          const allScripts = JSON.parse(localStorage.getItem('karma_mock_scripts') || '[]');
+          
+          if (!appState.editingScriptId && allScripts.filter(s => s.userId === appState.user.id).length >= 20) {
+            showToast('Storage limit reached (20 scripts max)!', 'error');
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = originalText;
+            return;
+          }
+
+          let scriptObj;
+          let mockObfCode = '';
+          
+          if (enableObfuscate) {
+            // Generate mock XOR obfuscated script with real Lua code syntax and print("skidder") hook check!
+            const keyStr = Array.from({length: 8}, () => Math.floor(Math.random() * 256)).join(',');
+            mockObfCode = `--[[
+\tProtected By Kers0ne (Karmaforges Anti-Deobfuscate Shield)
+]]
+return(function(...)
+\tlocal K={${keyStr}}
+\tlocal D="\\117\\092\\111\\108\\123\\104\\032"
+\tlocal B,C=string.byte,string.char
+\t
+\t-- Hook detection
+\tlocal is_hooked = false
+\tlocal real_load = loadstring or load
+\tif debug and debug.getinfo then
+\t\tif debug.getinfo(real_load).what == "Lua" then is_hooked = true end
+\t\tif debug.getinfo(print).what == "Lua" then is_hooked = true end
+\tend
+\tif not tostring(real_load):find("function") then is_hooked = true end
+\t
+\tlocal f = function(src)
+\t\tif is_hooked then
+\t\t\tspawn(function()
+\t\t\t\twhile true do
+\t\t\t\t\tprint("skidder")
+\t\t\t\t\ttask.wait(0.2)
+\t\t\t\tend
+\t\t\tend)
+\t\t\treturn real_load("while true do print('skidder') task.wait(1) end")
+\t\telse
+\t\t\treturn real_load(src)
+\t\tend
+\tend
+
+\t-- Decryption simulation
+\tprint("Secure loading...")
+\treturn f("print('skidder_blocked')")(...)
+end)(...)`;
+          }
+
+          if (appState.editingScriptId) {
+            // Edit
+            const index = allScripts.findIndex(s => s.id === appState.editingScriptId);
+            if (index !== -1) {
+              allScripts[index] = {
+                ...allScripts[index],
+                name,
+                description,
+                code,
+                obfuscatedCode: mockObfCode,
+                obfuscated: enableObfuscate
+              };
+              scriptObj = allScripts[index];
+            }
+          } else {
+            // Create
+            scriptObj = {
+              id: 'sc-' + Math.random().toString(36).substr(2, 9),
+              userId: appState.user.id,
+              name,
+              description,
+              code,
+              obfuscatedCode: mockObfCode,
+              obfuscated: enableObfuscate,
+              createdAt: new Date().toISOString()
+            };
+            allScripts.push(scriptObj);
+          }
+
+          localStorage.setItem('karma_mock_scripts', JSON.stringify(allScripts));
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = originalText;
+          
+          showToast(appState.editingScriptId ? 'Script updated successfully' : 'Script uploaded to Cloud storage!', 'success');
+          
+          if (enableObfuscate) {
+            document.getElementById('output-code-box').textContent = mockObfCode;
+            document.getElementById('output-section').style.display = 'block';
+            document.getElementById('output-section').scrollIntoView({ behavior: 'smooth' });
+          } else {
+            document.getElementById('output-section').style.display = 'none';
+          }
+
+          resetEditor();
+          mockLoadScripts();
+        }, 800);
+
+        return;
+      }
+
+      // Real Server API Call
+      try {
+        let res, data;
+        const bodyPayload = { name, description, code, enableObfuscate };
+
+        if (appState.editingScriptId) {
+          res = await apiFetch(`/api/scripts/${appState.editingScriptId}`, {
+            method: 'PUT',
+            body: JSON.stringify(bodyPayload)
+          });
+        } else {
+          res = await apiFetch('/api/scripts', {
+            method: 'POST',
+            body: JSON.stringify(bodyPayload)
+          });
+        }
+
+        if (res.ok) {
+          data = await res.json();
+          showToast(appState.editingScriptId ? 'Script updated successfully!' : 'Script saved to Cloud!', 'success');
+          
+          if (data.obfuscated && data.obfuscatedCode) {
+            document.getElementById('output-code-box').textContent = data.obfuscatedCode;
+            document.getElementById('output-section').style.display = 'block';
+            document.getElementById('output-section').scrollIntoView({ behavior: 'smooth' });
+          } else {
+            document.getElementById('output-section').style.display = 'none';
+          }
+
+          resetEditor();
+          await fetchScripts();
+        } else {
+          const errData = await res.json();
+          showToast(errData.error || 'Failed to save script', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to Server API', 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalText;
+      }
+    }
+
+    function startEditScript(scriptId) {
+      const script = appState.scripts.find(s => s.id === scriptId);
+      if (!script) return;
+
+      appState.editingScriptId = scriptId;
+      document.getElementById('editor-panel-title').textContent = `Editing Script: ${script.name}`;
+      document.getElementById('script-name').value = script.name;
+      document.getElementById('script-desc').value = script.description || '';
+      document.getElementById('script-code').value = script.code;
+      document.getElementById('enable-obfuscate').checked = script.obfuscated;
+      
+      document.getElementById('btn-save-script').innerHTML = `<span>⚡ Save Changes</span>`;
+      document.getElementById('btn-cancel-edit').style.display = 'inline-flex';
+      
+      document.getElementById('drop-zone').style.display = 'none';
+      
+      // Scroll to editor
+      document.getElementById('editor-panel-title').scrollIntoView({ behavior: 'smooth' });
+      updateLineNumbers();
+    }
+
+    function resetEditor() {
+      appState.editingScriptId = null;
+      document.getElementById('editor-panel-title').textContent = `Upload a New Script`;
+      document.getElementById('script-name').value = '';
+      document.getElementById('script-desc').value = '';
+      document.getElementById('script-code').value = '';
+      document.getElementById('enable-obfuscate').checked = true;
+      
+      document.getElementById('btn-save-script').innerHTML = `<span>⚡ Save & Host Script</span>`;
+      document.getElementById('btn-cancel-edit').style.display = 'none';
+      document.getElementById('drop-zone').style.display = 'block';
+      
+      updateLineNumbers();
+    }
+
+    async function handleDeleteScript(scriptId) {
+      if (!confirm('Are you sure you want to delete this script from storage?')) return;
+
+      if (appState.isMockMode) {
+        let allScripts = JSON.parse(localStorage.getItem('karma_mock_scripts') || '[]');
+        allScripts = allScripts.filter(s => s.id !== scriptId);
+        localStorage.setItem('karma_mock_scripts', JSON.stringify(allScripts));
+        showToast('Script deleted successfully', 'success');
+        mockLoadScripts();
+        return;
+      }
+
+      try {
+        const res = await apiFetch(`/api/scripts/${scriptId}`, {
+          method: 'DELETE'
+        });
+        if (res.ok) {
+          showToast('Script deleted successfully', 'success');
+          await fetchScripts();
+        } else {
+          showToast('Failed to delete script', 'error');
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
+    }
+
+    // --- REFERRALS & CREDITS SYSTEM ---
+    function updateReferralsPage() {
+      const currentDomain = window.location.origin;
+      const inviteLink = `${currentDomain}/invite/${appState.user.username}`;
+      document.getElementById('referral-link').textContent = inviteLink;
+
+      if (appState.isMockMode) {
+        const allRefs = JSON.parse(localStorage.getItem('karma_mock_referrals') || '[]');
+        const myRefs = allRefs.filter(r => r.referrerId === appState.user.id);
+        
+        document.getElementById('ref-stat-count').textContent = myRefs.length;
+        document.getElementById('ref-stat-credits').textContent = myRefs.length * 100;
+        return;
+      }
+
+      // Fetch stats from real server
+      document.getElementById('ref-stat-count').textContent = appState.user.credits ? Math.floor(appState.user.credits / 100) : 0;
+      document.getElementById('ref-stat-credits').textContent = appState.user.credits || 0;
+    }
+
+    function copyReferralLink() {
+      const linkText = document.getElementById('referral-link').textContent;
+      navigator.clipboard.writeText(linkText);
+      showToast('Referral link copied to clipboard!', 'success');
+    }
+
+    // --- AUTHENTICATION DIALOGS ---
+    function openAuthModal(mode) {
+      const modal = document.getElementById('auth-modal');
+      modal.classList.add('active');
+      toggleAuthMode(mode);
+    }
+
+    function closeAuthModal(e) {
+      if (!e || e.target === document.getElementById('auth-modal') || e.target.classList.contains('modal-close')) {
+        document.getElementById('auth-modal').classList.remove('active');
+      }
+    }
+
+    function toggleAuthMode(mode) {
+      const title = document.getElementById('auth-modal-title');
+      const desc = document.getElementById('auth-modal-desc');
+      const signinFields = document.getElementById('signin-fields');
+      const signupFields = document.getElementById('signup-fields');
+
+      if (mode === 'signup') {
+        title.textContent = "Sign Up";
+        desc.textContent = "Create an account to host up to 20 scripts on our premium servers.";
+        signinFields.style.display = 'none';
+        signupFields.style.display = 'block';
+      } else {
+        title.textContent = "Sign In";
+        desc.textContent = "Log in to access your script locker and cloud dashboard.";
+        signinFields.style.display = 'block';
+        signupFields.style.display = 'none';
+      }
+    }
+
+    async function submitSignIn() {
+      const loginIdentifier = document.getElementById('signin-login').value.trim();
+      const password = document.getElementById('signin-password').value;
+
+      if (!loginIdentifier || !password) {
+        showToast('Please fill in all fields', 'warning');
+        return;
+      }
+
+      if (appState.isMockMode) {
+        const users = JSON.parse(localStorage.getItem('karma_mock_users'));
+        const user = users.find(u => 
+          (u.email.toLowerCase() === loginIdentifier.toLowerCase() || u.username.toLowerCase() === loginIdentifier.toLowerCase()) && 
+          u.password === password
+        );
+
+        if (user) {
+          appState.user = {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            credits: user.credits,
+            isOwner: checkIsMockOwner(user.email, user.username)
+          };
+          localStorage.setItem('karma_mock_session', user.id);
+          updateAuthUI();
+          closeAuthModal();
+          showToast(`Welcome back, ${user.username}!`, 'success');
+          navigateTo('dashboard');
+        } else {
+          showToast('Invalid email/username or password.', 'error');
+        }
+        return;
+      }
+
+      // Real Sign In Call
+      try {
+        const res = await apiFetch('/api/auth/signin', {
+          method: 'POST',
+          body: JSON.stringify({ loginIdentifier, password })
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          // Store token in LocalStorage for cross-domain auth
+          localStorage.setItem('auth_token', data.token);
+          appState.user = data.user;
+          updateAuthUI();
+          closeAuthModal();
+          showToast(`Signed in successfully as ${appState.user.username}`, 'success');
+          navigateTo('dashboard');
+        } else {
+          const errData = await res.json();
+          showToast(errData.error || 'Sign in failed', 'error');
+        }
+      } catch (err) {
+        showToast('Network error during login', 'error');
+      }
+    }
+
+    async function submitSignUp() {
+      const username = document.getElementById('signup-username').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const referralCode = document.getElementById('signup-referral').value.trim();
+
+      if (!username || !email || !password) {
+        showToast('Please fill in all fields', 'warning');
+        return;
+      }
+
+      if (appState.isMockMode) {
+        const users = JSON.parse(localStorage.getItem('karma_mock_users'));
+        
+        if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+          showToast('An account with this email already exists.', 'error');
+          return;
+        }
+        if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+          showToast('Username is already taken.', 'error');
+          return;
+        }
+
+        let userCredits = 0;
+        let referrerObj = null;
+        if (referralCode) {
+          referrerObj = users.find(u => u.username.toLowerCase() === referralCode.toLowerCase());
+          if (referrerObj) {
+            userCredits = 50; // New user gets 50 mock credits!
+          } else {
+            showToast('Referral code not found.', 'warning');
+          }
+        }
+
+        const newUser = {
+          id: 'ur-' + Math.random().toString(36).substr(2, 9),
+          email,
+          username,
+          password, // Store as text in mock
+          credits: userCredits,
+          referredBy: referrerObj ? referrerObj.username : null,
+          createdAt: new Date().toISOString()
+        };
+
+        users.push(newUser);
+        localStorage.setItem('karma_mock_users', JSON.stringify(users));
+
+        // Credit referrer if exists
+        if (referrerObj) {
+          referrerObj.credits = (referrerObj.credits || 0) + 100; // Referrer gets 100 mock credits
+          localStorage.setItem('karma_mock_users', JSON.stringify(users));
+
+          // Log mock referral
+          const refs = JSON.parse(localStorage.getItem('karma_mock_referrals') || '[]');
+          refs.push({
+            id: 'ref-' + Math.random().toString(36).substr(2, 9),
+            referrerId: referrerObj.id,
+            referrerName: referrerObj.username,
+            referredId: newUser.id,
+            referredName: newUser.username,
+            creditsAwarded: 100,
+            createdAt: new Date().toISOString()
+          });
+          localStorage.setItem('karma_mock_referrals', JSON.stringify(refs));
+        }
+
+        appState.user = {
+          id: newUser.id,
+          email: newUser.email,
+          username: newUser.username,
+          credits: newUser.credits,
+          isOwner: checkIsMockOwner(newUser.email, newUser.username)
+        };
+
+        localStorage.setItem('karma_mock_session', newUser.id);
+        
+        // Clear banner
+        document.getElementById('referral-welcome-banner').style.display = 'none';
+
+        updateAuthUI();
+        closeAuthModal();
+        showToast('Account created successfully!', 'success');
+        navigateTo('dashboard');
+        return;
+      }
+
+      // Real Sign Up Call
+      try {
+        const res = await apiFetch('/api/auth/signup', {
+          method: 'POST',
+          body: JSON.stringify({ username, email, password, referralCode })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          // Store token in LocalStorage for cross-domain auth
+          localStorage.setItem('auth_token', data.token);
+          appState.user = data.user;
+          updateAuthUI();
+          closeAuthModal();
+          
+          // Clear banner
+          document.getElementById('referral-welcome-banner').style.display = 'none';
+
+          showToast('Account registered successfully!', 'success');
+          navigateTo('dashboard');
+        } else {
+          const errData = await res.json();
+          showToast(errData.error || 'Sign up failed', 'error');
+        }
+      } catch (err) {
+        showToast('Network error during signup', 'error');
+      }
+    }
+
+    async function handleSignOut() {
+      if (appState.isMockMode) {
+        localStorage.removeItem('karma_mock_session');
+        appState.user = null;
+        updateAuthUI();
+        showToast('Logged out of mock session', 'info');
+        navigateTo('home');
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/api/auth/signout', { method: 'POST' });
+        if (res.ok) {
+          localStorage.removeItem('auth_token');
+          appState.user = null;
+          updateAuthUI();
+          showToast('Signed out successfully.', 'info');
+          navigateTo('home');
+        }
+      } catch (err) {
+        showToast('Network error on logout', 'error');
+      }
+    }
+
+    function updateAuthUI() {
+      const authButtons = document.getElementById('auth-buttons');
+      const userProfile = document.getElementById('user-profile');
+      
+      const linkDashboard = document.getElementById('link-dashboard');
+      const linkReferrals = document.getElementById('link-referrals');
+      const linkAdmin = document.getElementById('link-admin');
+
+      if (appState.user) {
+        // Authenticated
+        authButtons.style.display = 'none';
+        userProfile.style.display = 'flex';
+        
+        document.getElementById('profile-username').textContent = appState.user.username;
+        document.getElementById('profile-credits').textContent = appState.user.credits || 0;
+
+        linkDashboard.style.display = 'block';
+        linkReferrals.style.display = 'block';
+        
+        if (appState.user.isOwner) {
+          linkAdmin.style.display = 'block';
+        } else {
+          linkAdmin.style.display = 'none';
+        }
+      } else {
+        // Unauthenticated
+        authButtons.style.display = 'flex';
+        userProfile.style.display = 'none';
+
+        linkDashboard.style.display = 'none';
+        linkReferrals.style.display = 'none';
+        linkAdmin.style.display = 'none';
+      }
+    }
+
+
+    // --- OWNERS (ADMIN) DASHBOARD ---
+    async function fetchAdminData() {
+      if (appState.isMockMode) {
+        const users = JSON.parse(localStorage.getItem('karma_mock_users') || '[]');
+        const owners = JSON.parse(localStorage.getItem('karma_mock_owners') || '[]');
+        const scripts = JSON.parse(localStorage.getItem('karma_mock_scripts') || '[]');
+        const referrals = JSON.parse(localStorage.getItem('karma_mock_referrals') || '[]');
+
+        appState.admin.stats = {
+          totalUsers: users.length,
+          totalScripts: scripts.length,
+          totalOwners: owners.length,
+          totalReferrals: referrals.length
+        };
+        appState.admin.users = users;
+        appState.admin.owners = owners;
+        
+        renderAdminDashboard();
+        return;
+      }
+
+      // Real Server API Calls
+      try {
+        const statsRes = await apiFetch('/api/admin/stats');
+        const ownersRes = await apiFetch('/api/admin/owners');
+        const usersRes = await apiFetch('/api/admin/users');
+
+        if (statsRes.ok && ownersRes.ok && usersRes.ok) {
+          appState.admin.stats = await statsRes.json();
+          appState.admin.owners = await ownersRes.json();
+          appState.admin.users = await usersRes.json();
+          renderAdminDashboard();
+        }
+      } catch (err) {
+        showToast('Error fetching owner console statistics', 'error');
+      }
+    }
+
+    function renderAdminDashboard() {
+      const stats = appState.admin.stats;
+      if (!stats) return;
+
+      // Stats boxes
+      document.getElementById('admin-stat-users').textContent = stats.totalUsers;
+      document.getElementById('admin-stat-scripts').textContent = stats.totalScripts;
+      document.getElementById('admin-stat-owners').textContent = stats.totalOwners;
+      document.getElementById('admin-stat-referrals').textContent = stats.totalReferrals;
+
+      // Users table
+      const usersTable = document.getElementById('admin-users-table');
+      if (appState.admin.users.length === 0) {
+        usersTable.innerHTML = `<tr><td colspan="5" style="text-align: center;">No registered users.</td></tr>`;
+      } else {
+        usersTable.innerHTML = appState.admin.users.map(u => {
+          return `
+            <tr>
+              <td><strong>${escapeHTML(u.username)}</strong></td>
+              <td>${escapeHTML(u.email)}</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="color: var(--accent-neon); font-weight: 700;">${u.credits || 0}</span>
+                  <button class="btn btn-secondary btn-sm" style="padding: 2px 6px; font-size: 10px;" onclick="promptEditCredits('${u.id}', '${u.username}', ${u.credits})">Edit</button>
+                </div>
+              </td>
+              <td>${u.referredBy ? `👤 ` + escapeHTML(u.referredBy) : `<span style="color: var(--text-muted); font-size: 11px;">None</span>`}</td>
+              <td>
+                <span style="font-size: 11px; color: var(--text-muted);">${new Date(u.createdAt).toLocaleDateString()}</span>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Owners table
+      const ownersTable = document.getElementById('admin-owners-table');
+      if (appState.admin.owners.length === 0) {
+        ownersTable.innerHTML = `<tr><td colspan="4" style="text-align: center;">No owners added.</td></tr>`;
+      } else {
+        ownersTable.innerHTML = appState.admin.owners.map(o => {
+          return `
+            <tr>
+              <td>${o.email ? escapeHTML(o.email) : `<span style="color: var(--text-muted); font-size: 11px;">Any email</span>`}</td>
+              <td>${o.username ? `<strong>` + escapeHTML(o.username) + `</strong>` : `<span style="color: var(--text-muted); font-size: 11px;">Any username</span>`}</td>
+              <td><span style="font-size: 11px; color: var(--text-muted);">${new Date(o.createdAt).toLocaleDateString()}</span></td>
+              <td>
+                <button class="btn btn-danger btn-sm" onclick="handleRemoveOwner('${o.id}')">Remove Owner</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    function switchAdminTab(tabName) {
+      document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+
+      document.getElementById(`tab-btn-${tabName}`).classList.add('active');
+      document.getElementById(`admin-sec-${tabName}`).classList.add('active');
+    }
+
+    async function promptEditCredits(userId, username, currentCredits) {
+      const newCredits = prompt(`Enter new credit balance for ${username}:`, currentCredits);
+      if (newCredits === null || isNaN(newCredits) || newCredits.trim() === '') return;
+
+      const credNum = Number(newCredits);
+
+      if (appState.isMockMode) {
+        const users = JSON.parse(localStorage.getItem('karma_mock_users') || '[]');
+        const idx = users.findIndex(u => u.id === userId);
+        if (idx !== -1) {
+          users[idx].credits = credNum;
+          localStorage.setItem('karma_mock_users', JSON.stringify(users));
+          showToast(`Updated ${username}'s credits to ${credNum}`, 'success');
+          
+          // If self, update UI
+          if (userId === appState.user.id) {
+            appState.user.credits = credNum;
+            updateAuthUI();
+          }
+
+          fetchAdminData();
+        }
+        return;
+      }
+
+      // Real Server call
+      try {
+        const res = await apiFetch(`/api/admin/users/${userId}/credits`, {
+          method: 'POST',
+          body: JSON.stringify({ credits: credNum })
+        });
+        
+        if (res.ok) {
+          showToast(`Successfully set ${username}'s credits to ${credNum}`, 'success');
+          
+          // If self, update UI
+          if (userId === appState.user.id) {
+            appState.user.credits = credNum;
+            updateAuthUI();
+          }
+
+          fetchAdminData();
+        } else {
+          showToast('Failed to edit credits', 'error');
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
+    }
+
+    async function handleAddOwner() {
+      const email = document.getElementById('new-owner-email').value.trim();
+      const username = document.getElementById('new-owner-username').value.trim();
+
+      if (!email && !username) {
+        showToast('Please specify either email or username target!', 'warning');
+        return;
+      }
+
+      if (appState.isMockMode) {
+        const owners = JSON.parse(localStorage.getItem('karma_mock_owners') || '[]');
+        
+        if (owners.some(o => (email && o.email === email) || (username && o.username === username))) {
+          showToast('This target is already an owner!', 'warning');
+          return;
+        }
+
+        const newOwnerObj = {
+          id: 'ow-' + Math.random().toString(36).substr(2, 9),
+          email: email || null,
+          username: username || null,
+          createdAt: new Date().toISOString()
+        };
+
+        owners.push(newOwnerObj);
+        localStorage.setItem('karma_mock_owners', JSON.stringify(owners));
+        showToast('Added owner successfully', 'success');
+        
+        // If target was self, refresh auth so owner panel stays visible
+        const currentMockUser = JSON.parse(localStorage.getItem('karma_mock_users')).find(u => u.id === appState.user.id);
+        if (currentMockUser && ((email && currentMockUser.email === email) || (username && currentMockUser.username === username))) {
+          appState.user.isOwner = true;
+          updateAuthUI();
+        }
+
+        document.getElementById('new-owner-email').value = '';
+        document.getElementById('new-owner-username').value = '';
+        fetchAdminData();
+        return;
+      }
+
+      // Real Server call
+      try {
+        const res = await apiFetch('/api/admin/owners', {
+          method: 'POST',
+          body: JSON.stringify({ email, username })
+        });
+
+        if (res.ok) {
+          showToast('Owner permissions granted successfully!', 'success');
+          document.getElementById('new-owner-email').value = '';
+          document.getElementById('new-owner-username').value = '';
+          fetchAdminData();
+        } else {
+          const errData = await res.json();
+          showToast(errData.error || 'Failed to add owner', 'error');
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
+    }
+
+    async function handleRemoveOwner(ownerId) {
+      if (!confirm('Are you sure you want to revoke this user\'s owner access?')) return;
+
+      if (appState.isMockMode) {
+        if (ownerId === 'ow-1') {
+          showToast('Cannot remove base developer accounts.', 'error');
+          return;
+        }
+
+        let owners = JSON.parse(localStorage.getItem('karma_mock_owners') || '[]');
+        owners = owners.filter(o => o.id !== ownerId);
+        localStorage.setItem('karma_mock_owners', JSON.stringify(owners));
+        showToast('Owner removed successfully', 'success');
+        
+        fetchAdminData();
+        return;
+      }
+
+      // Real Server call
+      try {
+        const res = await apiFetch(`/api/admin/owners/${ownerId}`, {
+          method: 'DELETE'
+        });
+
+        if (res.ok) {
+          showToast('Owner access revoked successfully.', 'success');
+          fetchAdminData();
+        } else {
+          const errData = await res.json();
+          showToast(errData.error || 'Failed to remove owner', 'error');
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
+    }
+
+
+    // --- FRONTEND LINE NUMBERS & DRAG DROP ---
+    function updateLineNumbers() {
+      const textarea = document.getElementById('script-code');
+      const linesContainer = document.getElementById('editor-line-numbers');
+      const lines = textarea.value.split('\n').length;
+      
+      linesContainer.innerHTML = Array.from({length: Math.max(lines, 1)}, (_, i) => `<span>${i + 1}</span>`).join('');
+    }
+
+    function syncScroll() {
+      const textarea = document.getElementById('script-code');
+      const linesContainer = document.getElementById('editor-line-numbers');
+      linesContainer.scrollTop = textarea.scrollTop;
+    }
+
+    function triggerFileInput() {
+      document.getElementById('file-input').click();
+    }
+
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      readFile(file);
+    }
+
+    // Drag and Drop implementation
+    const dropZone = document.getElementById('drop-zone');
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+      }, false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const file = dt.files[0];
+      if (file) {
+        readFile(file);
+      }
+    }, false);
+
+    function readFile(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        // Set filename as script name if empty
+        const nameInput = document.getElementById('script-name');
+        if (!nameInput.value) {
+          const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+          nameInput.value = nameWithoutExt;
+        }
+
+        document.getElementById('script-code').value = e.target.result;
+        updateLineNumbers();
+        showToast(`Loaded script: "${file.name}"`, 'info');
+      };
+      reader.onerror = function() {
+        showToast('Failed to read file!', 'error');
+      };
+      reader.readAsText(file);
+    }
+
+    function copyOutputCode() {
+      const code = document.getElementById('output-code-box').textContent;
+      navigator.clipboard.writeText(code);
+      showToast('Obfuscated code copied to clipboard!', 'success');
+    }
+
+
+    // --- UTILITIES ---
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag)
+      );
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      let typeEmoji = 'ℹ️';
+      if (type === 'success') typeEmoji = '✅';
+      if (type === 'error') typeEmoji = '❌';
+      if (type === 'warning') typeEmoji = '⚠️';
+
+      toast.innerHTML = `
+        <span>${typeEmoji} ${message}</span>
+        <span class="toast-close" onclick="this.parentElement.remove()">✕</span>
+      `;
+
+      container.appendChild(toast);
+      
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.remove();
+        }
+      }, 5000);
+    }
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19b33265f28c970',t:'MTc4MzgwODQ3Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
