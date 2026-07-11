@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karmaforges — Cloud Obfuscator & Script Hub</title>
+  <title>Karma Lua Hosting — Premium Script Security & Licensing</title>
   <style>
-    /* Ultra-Premium Minimalist Black & White Theme */
+    /* Ultra-Premium Minimalist Black & White Theme (inspired by Faulmor but monochrome) */
     :root {
       --bg-base: #000000;
       --bg-surface: #0a0a0a;
       --bg-surface-glass: rgba(10, 10, 10, 0.85);
-      --border-color: rgba(255, 255, 255, 0.1);
-      --border-color-glow: rgba(255, 255, 255, 0.25);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-color-glow: rgba(255, 255, 255, 0.2);
       --accent-primary: #ffffff;
       --accent-secondary: #888888;
       --text-main: #f5f5f5;
-      --text-muted: #888888;
+      --text-muted: #666666;
       --success: #ffffff;
       --error: #ff3333;
       --warning: #ffaa00;
@@ -35,6 +35,21 @@
       line-height: 1.5;
     }
 
+    /* Looping Black & White Anime GIF Background (Subtle Overlay) */
+    .anime-bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('https://i.pinimg.com/originals/ca/b9/7a/cab97af940113c24058d4a9ecdb171c7.gif');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.04; /* Ultra-subtle, elegant, premium scripter aesthetic */
+      pointer-events: none;
+      z-index: -1;
+    }
+
     /* Scrollbars */
     ::-webkit-scrollbar {
       width: 6px;
@@ -44,7 +59,7 @@
       background: var(--bg-base);
     }
     ::-webkit-scrollbar-thumb {
-      background: #222222;
+      background: #1e1e1e;
       border-radius: 3px;
     }
     ::-webkit-scrollbar-thumb:hover {
@@ -80,7 +95,7 @@
       gap: 10px;
       text-decoration: none;
       color: var(--text-main);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -163,7 +178,7 @@
 
     /* Notification Banner */
     .banner {
-      background: #111111;
+      background: #080808;
       border-bottom: 1px solid var(--border-color);
       padding: 10px 20px;
       text-align: center;
@@ -199,10 +214,10 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Home Hero Page */
+    /* Home Hero Page (Faulmor Style) */
     .hero-section {
       text-align: center;
-      padding: 80px 0 60px 0;
+      padding: 100px 0 60px 0;
       position: relative;
     }
 
@@ -221,10 +236,10 @@
     }
 
     .hero-title {
-      font-size: 48px;
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -1.5px;
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -2.5px;
       margin-bottom: 20px;
       color: var(--accent-primary);
     }
@@ -232,9 +247,10 @@
     .hero-desc {
       font-size: 16px;
       color: var(--text-muted);
-      max-width: 580px;
+      max-width: 600px;
       margin: 0 auto 40px auto;
       font-weight: 400;
+      line-height: 1.6;
     }
 
     /* Connection Info */
@@ -242,7 +258,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 1px;
       padding: 4px 10px;
@@ -275,7 +291,7 @@
     .card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 4px;
       padding: 32px;
       transition: all 0.2s ease;
       position: relative;
@@ -283,7 +299,6 @@
 
     .card:hover {
       border-color: var(--border-color-glow);
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.02);
     }
 
     .feature-icon {
@@ -305,7 +320,7 @@
     }
 
     .card-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       margin-bottom: 10px;
       letter-spacing: 0.3px;
@@ -315,6 +330,105 @@
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.6;
+    }
+
+    /* Changelog Section (Faulmor Style) */
+    .changelog-section {
+      margin-top: 80px;
+    }
+
+    .changelog-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 30px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .changelog-version {
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .changelog-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .changelog-body h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .changelog-body p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Pricing Section (Faulmor Style) */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .pricing-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pricing-card.royal {
+      border-color: var(--accent-primary);
+    }
+
+    .pricing-header h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .pricing-price {
+      font-size: 36px;
+      font-weight: 900;
+      margin: 15px 0;
+    }
+
+    .pricing-price span {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin: 25px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-features li svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--accent-primary);
     }
 
     /* Dashboard & Code Editor */
@@ -384,7 +498,7 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #222222;
+      background: #151515;
     }
 
     .editor-lang {
@@ -405,7 +519,7 @@
 
     .editor-lines {
       background: #020202;
-      color: #333333;
+      color: #252525;
       padding: 16px 0;
       text-align: right;
       padding-right: 12px;
@@ -422,7 +536,7 @@
       background: transparent;
       border: none;
       resize: vertical;
-      color: #e5e5e5;
+      color: #e0e0e0;
       padding: 16px;
       width: 100%;
       height: 100%;
@@ -449,8 +563,8 @@
     }
 
     .drag-drop-zone svg {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       fill: var(--text-muted);
       margin-bottom: 8px;
     }
@@ -484,80 +598,6 @@
 
     .form-input:focus {
       border-color: var(--accent-primary);
-    }
-
-    /* Toggle Switch */
-    .toggle-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px;
-      background: #050505;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      margin-bottom: 24px;
-    }
-
-    .toggle-label-wrap {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .toggle-title {
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .toggle-desc {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 40px;
-      height: 20px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #1e1e1e;
-      transition: .2s;
-      border-radius: 20px;
-      border: 1px solid var(--border-color);
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 12px;
-      width: 12px;
-      left: 3px;
-      bottom: 3px;
-      background-color: var(--text-muted);
-      transition: .2s;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background-color: var(--accent-primary);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(20px);
-      background-color: var(--bg-base);
     }
 
     /* Script Listing */
@@ -602,21 +642,9 @@
       align-items: center;
     }
 
-    .badge-obf {
-      background: transparent;
-      color: var(--accent-primary);
-      border: 1px solid var(--accent-primary);
-      font-size: 8px;
-      padding: 1px 6px;
-      border-radius: 2px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
     .badge-raw {
       background: transparent;
-      color: var(--text-muted);
+      color: var(--text-main);
       border: 1px solid var(--border-color);
       font-size: 8px;
       padding: 1px 6px;
@@ -631,39 +659,7 @@
       gap: 8px;
     }
 
-    /* Referrals Dashboard */
-    .ref-header-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      padding: 40px;
-      border-radius: 6px;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .ref-link-box {
-      background: #000000;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      padding: 10px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 540px;
-      margin: 24px auto 0 auto;
-    }
-
-    .ref-url {
-      color: var(--text-main);
-      font-family: monospace;
-      font-size: 13px;
-      overflow-x: auto;
-      white-space: nowrap;
-      margin-right: 15px;
-      flex-grow: 1;
-      text-align: left;
-    }
-
+    /* Stats Row */
     .stats-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -856,68 +852,16 @@
       color: var(--text-muted);
       margin-left: 15px;
     }
-
-    /* Script View/Output Area */
-    .output-section {
-      background: #020202;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 20px;
-      margin-top: 24px;
-    }
-
-    .output-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .output-title {
-      font-weight: 700;
-      font-size: 12px;
-      color: var(--text-main);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .output-box {
-      background: #000000;
-      color: #dfdfdf;
-      padding: 16px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 13px;
-      line-height: 1.6;
-      max-height: 240px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-      border: 1px solid var(--border-color);
-    }
-
-    /* Loader */
-    .spinner {
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      border-top: 2px solid var(--accent-primary);
-      width: 14px;
-      height: 14px;
-      animation: spin 0.8s linear infinite;
-      display: inline-block;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body>
 
+  <!-- Background Looping Anime GIF Element -->
+  <div class="anime-bg-overlay"></div>
+
   <!-- Serverless Node Banner -->
   <div id="preview-mode-banner" class="banner" style="display: none;">
-    <span>Offline Mode: Using local browser storage. Enter your Render backend node URL to connect.</span>
+    <span>Offline Mode: Using local browser storage. Enter your backend node URL to connect.</span>
   </div>
 
   <!-- Referral Welcome Banner -->
@@ -927,20 +871,21 @@
 
   <header>
     <div class="container nav-wrap">
-      <a href="#" class="logo" onclick="navigateTo('home')">Karma<span>forges</span></a>
+      <a href="#" class="logo" onclick="navigateTo('home')">Karma<span> Lua Hosting</span></a>
       
       <div class="nav-links">
         <a class="nav-link active" onclick="navigateTo('home')" id="link-home">Home</a>
-        <a class="nav-link" onclick="navigateTo('dashboard')" id="link-dashboard" style="display: none;">Dashboard</a>
+        <a class="nav-link" onclick="navigateTo('dashboard')" id="link-dashboard" style="display: none;">Scripts</a>
+        <a class="nav-link" onclick="navigateTo('keys')" id="link-keys" style="display: none;">Licenses</a>
         <a class="nav-link" onclick="navigateTo('referrals')" id="link-referrals" style="display: none;">Referrals</a>
         <a class="nav-link" onclick="navigateTo('admin')" id="link-admin" style="display: none;">Owner Panel</a>
         
         <div id="auth-buttons">
-          <button class="btn btn-secondary btn-sm" onclick="openAuthModal('signin')">Sign In</button>
-          <button class="btn btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+          <button class="btn btn-sm" onclick="redirectToDiscordAuth()">Sign In with Discord</button>
         </div>
         
         <div id="user-profile" style="display: none; align-items: center; gap: 16px;">
+          <img id="profile-avatar" src="" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border-color); display: none;">
           <span style="font-size: 13px; font-weight: 500;">
             User: <span id="profile-username" style="color: var(--accent-primary); font-weight: 700;">User</span> 
             (<span id="profile-credits" style="font-weight: 700;">0</span> Credits)
@@ -953,15 +898,15 @@
 
   <main class="container">
 
-    <!-- VIEW: HOME (LANDING) -->
+    <!-- VIEW: HOME (LANDING - FAULMOR STYLE) -->
     <div id="page-home" class="view-page active">
       <div class="hero-section">
-        <div class="hero-badge">Luau Protection Platform</div>
-        <h1 class="hero-title">Host & Protect Your Luau Scripts</h1>
-        <p class="hero-desc">Cloud storage and military-grade register-shuffled VM obfuscation with integrated anti-deobfuscation lock protection.</p>
-        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px;">
-          <button class="btn btn-lg" onclick="handleGetStarted()">Get Started</button>
-          <a href="#features" class="btn btn-secondary btn-lg" onclick="scrollToFeatures(event)">Features</a>
+        <div class="hero-badge">The gold standard for Lua security</div>
+        <h1 class="hero-title">Protect. Whitelist. Deliver.</h1>
+        <p class="hero-desc">Host your project, generate license keys, HWID-lock clients, and whitelists directly from our minimalist cloud panel. Safeguarded against automated scrapers and Discord dumper bots.</p>
+        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
+          <button class="btn btn-lg" onclick="redirectToDiscordAuth()">Enter the lab</button>
+          <a href="#features" class="btn btn-secondary btn-lg" onclick="scrollToFeatures(event)">How it works</a>
         </div>
 
         <div class="connection-status-pill">
@@ -970,8 +915,10 @@
         </div>
       </div>
 
-      <div id="features" style="padding-top: 20px;">
-        <h2 style="font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 40px; letter-spacing: 0.5px;">Platform Specifications</h2>
+      <!-- FEATURES SECTION -->
+      <div id="features" style="padding-top: 60px;">
+        <h2 style="font-size: 24px; font-weight: 900; text-align: center; margin-bottom: 10px; letter-spacing: -0.5px;">Everything you need to ship and protect.</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 50px; font-size: 14px;">A complete, private cloud solution designed for Roblox developers.</p>
         
         <div class="features-grid">
           <!-- Feature 1 -->
@@ -979,8 +926,8 @@
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 13H5v-2h14v2z"/></svg>
             </div>
-            <h3 class="card-title">Cloud Storage</h3>
-            <p class="card-desc">Store up to 20 scripts securely in your cloud dashboard. Drag-and-drop your script files directly to upload.</p>
+            <h3 class="card-title">Cloud Script Locker</h3>
+            <p class="card-desc">Upgraded storage capacity supporting up to 100 concurrent script uploads. Directly upload or paste raw code and deliver instantly.</p>
           </div>
 
           <!-- Feature 2 -->
@@ -988,8 +935,8 @@
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
             </div>
-            <h3 class="card-title">Kers0ne Obfuscator</h3>
-            <p class="card-desc">Secured by Kers0ne registered-shuffled register VM encryption. Rewrites execution registers to prevent source recovery.</p>
+            <h3 class="card-title">Whitelist Key Manager</h3>
+            <p class="card-desc">Generate private licensing keys on demand. Distribute them, self-redeem, revoke, or extend active periods with single clicks.</p>
           </div>
 
           <!-- Feature 3 -->
@@ -997,8 +944,8 @@
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z"/></svg>
             </div>
-            <h3 class="card-title">Anti-Deobfuscation Protection</h3>
-            <p class="card-desc">Advanced anti-tampering detects custom environments and debug hooks. Triggers a permanent lock, block, and console spams print("skidder").</p>
+            <h3 class="card-title">Hardware Lock Guard</h3>
+            <p class="card-desc">Automatic HWID tracker binds each distributed key to a single user client device on first execution. Easy reset via user portal.</p>
           </div>
 
           <!-- Feature 4 -->
@@ -1006,41 +953,124 @@
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93z"/></svg>
             </div>
-            <h3 class="card-title">Adapting Loadstrings</h3>
-            <p class="card-desc">Loadstrings automatically resolve to the host domain they are running on. Works immediately on any custom domain or host provider.</p>
-          </div>
-
-          <!-- Feature 5 -->
-          <div class="card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3z"/></svg>
-            </div>
-            <h3 class="card-title">Referral System</h3>
-            <p class="card-desc">Share invitation links. Your referred friends receive 50 bonus credits on registration, and your account earns 100 credits.</p>
-          </div>
-
-          <!-- Feature 6 -->
-          <div class="card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.49 10 10-4.49 10-10 10z"/></svg>
-            </div>
-            <h3 class="card-title">Secure Raw Gate</h3>
-            <p class="card-desc">Serves plain text only to verified execution engines and scripts. Web browsers attempting raw link access are automatically redirected to home.</p>
+            <h3 class="card-title">Anti-Dump Secure Gate</h3>
+            <p class="card-desc">Strict verification processes block dumper bots, scraping commands, and unauthorized web requests. Unauthorized links return Not Found.</p>
           </div>
         </div>
       </div>
+
+      <!-- CHANGELOG SECTION -->
+      <div class="changelog-section">
+        <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 10px; letter-spacing: -0.5px;">Shipping every week.</h2>
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 14px;">Karma Lua Hosting is in continuous development. Here is what recently landed.</p>
+
+        <div class="changelog-row">
+          <div>
+            <div class="changelog-version">v1.76.004</div>
+            <div class="changelog-date">July 11, 2026</div>
+          </div>
+          <div class="changelog-body">
+            <h4>Critical loader execution recovery</h4>
+            <p>Fixed a Stage-1 delivery wrapper path that could stop before Stage 2 with no console output on some Roblox executors, making a valid loadstring appear to do absolutely nothing.</p>
+          </div>
+        </div>
+
+        <div class="changelog-row">
+          <div>
+            <div class="changelog-version">v1.76.003</div>
+            <div class="changelog-date">July 11, 2026</div>
+          </div>
+          <div class="changelog-body">
+            <h4>Header navigation visibility + VM runtime hardening</h4>
+            <p>Reduced VM runtime fingerprinting and strengthened internal constant-pool integrity.</p>
+          </div>
+        </div>
+
+        <div class="changelog-row">
+          <div>
+            <div class="changelog-version">v1.76.002</div>
+            <div class="changelog-date">July 10, 2026</div>
+          </div>
+          <div class="changelog-body">
+            <h4>Loader v2 rolled out to everyone</h4>
+            <p>Loader v2 (hardened key-exchange delivery path) is now the default for every script and every client. Passive network dumpers walk away with strictly less usable material.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BY THE NUMBERS -->
+      <div style="margin-top: 100px; text-align: center;">
+        <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 10px; letter-spacing: -0.5px;">A community that's growing fast.</h2>
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 14px;">Join developer workspaces securing their logic with Karma.</p>
+        
+        <div class="stats-row" style="max-width: 600px; margin: 0 auto 50px auto;">
+          <div class="stat-box">
+            <div class="stat-val">152</div>
+            <div class="stat-label">Creators Onboarded</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">281</div>
+            <div class="stat-label">Scripts Protected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRICING SECTION -->
+      <div style="margin-top: 80px;">
+        <h2 style="font-size: 24px; font-weight: 900; text-align: center; margin-bottom: 10px; letter-spacing: -0.5px;">Simple plans. Real protection.</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px; font-size: 14px;">Start free. Upgrade when you need unlimited firepower.</p>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <h3>Citizen</h3>
+              <p style="font-size: 13px; color: var(--text-muted);">Standard developer workspace</p>
+              <div class="pricing-price">$0<span>/forever</span></div>
+            </div>
+            <ul class="pricing-features">
+              <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 100 slots script cloud hosting</li>
+              <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> HWID-lock whitelist licenses</li>
+              <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Anti-dump bot secure gates</li>
+              <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Analytics Dashboard</li>
+            </ul>
+            <button class="btn btn-secondary" style="width: 100%;" onclick="redirectToDiscordAuth()">Get Started Free</button>
+          </div>
+
+          <div class="pricing-card royal">
+            <div class="pricing-header">
+              <h3 style="color: var(--accent-primary);">Royal</h3>
+              <p style="font-size: 13px; color: var(--text-muted);">Premium licensing and execution</p>
+              <div class="pricing-price" style="color: var(--accent-primary);">$3<span>/month</span></div>
+            </div>
+            <ul class="pricing-features">
+              <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Everything in Citizen</li>
+              <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Server-Verified Runtime</li>
+              <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Priority script build queues</li>
+              <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Royal status on user platforms</li>
+            </ul>
+            <button class="btn" style="width: 100%;" onclick="redirectToDiscordAuth()">Upgrade to Royal</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM ACTION HERO -->
+      <div style="margin-top: 100px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 60px;">
+        <h2 style="font-size: 28px; font-weight: 900; margin-bottom: 15px; letter-spacing: -1px;">Ready to take back control?</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 14px;">Sign in with Discord, upload your first script, and distribute in minutes.</p>
+        <button class="btn btn-lg" onclick="redirectToDiscordAuth()">Sign In with Discord</button>
+      </div>
     </div>
 
-    <!-- VIEW: DASHBOARD -->
+    <!-- VIEW: DASHBOARD (PRIVATE - LOGGED IN) -->
     <div id="page-dashboard" class="view-page">
       <div class="dashboard-grid">
         <!-- Left: Upload/Edit Script Panel -->
         <div>
-          <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 20px;" id="editor-panel-title">Upload Script</h2>
+          <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 20px;" id="editor-panel-title">Upload Script</h2>
           
           <!-- Drag & Drop Zone -->
           <div class="drag-drop-zone" id="drop-zone" onclick="triggerFileInput()">
-            <svg viewBox="0 0 24 24" width="24" height="24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
             <p id="drop-zone-text" style="font-size: 13px;">Drag and drop script file here (.lua / .luau / .txt) or click to browse</p>
             <input type="file" id="file-input" style="display: none;" accept=".lua,.luau,.txt" onchange="handleFileSelect(event)">
           </div>
@@ -1072,31 +1102,11 @@
             </div>
           </div>
 
-          <div class="toggle-wrap">
-            <div class="toggle-label-wrap">
-              <span class="toggle-title">Enable Obfuscate</span>
-              <span class="toggle-desc">Compile using Kers0ne Obfuscator with Skid Protection lock</span>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="enable-obfuscate" checked>
-              <span class="slider"></span>
-            </label>
-          </div>
-
           <div style="display: flex; gap: 15px;">
             <button class="btn" id="btn-save-script" onclick="handleSaveScript()">
               <span>Save & Host Script</span>
             </button>
             <button class="btn btn-secondary" id="btn-cancel-edit" onclick="resetEditor()" style="display: none;">Cancel</button>
-          </div>
-
-          <!-- Script Output Box (shown after upload/edit) -->
-          <div id="output-section" class="output-section" style="display: none;">
-            <div class="output-header">
-              <span class="output-title">Obfuscated Output Code</span>
-              <button class="btn btn-secondary btn-sm" onclick="copyOutputCode()">Copy Output</button>
-            </div>
-            <div class="output-box" id="output-code-box"></div>
           </div>
         </div>
 
@@ -1104,20 +1114,20 @@
         <div>
           <div style="position: sticky; top: 100px;">
             <div class="card" style="padding: 24px; margin-bottom: 24px;">
-              <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Script Storage</h3>
+              <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Script Storage</h3>
               <div class="storage-indicator">
                 <div style="display: flex; flex-direction: column;">
-                  <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Cloud Locker</span>
-                  <span style="font-size: 16px; font-weight: 800;" id="storage-fraction">0 / 20 Scripts</span>
+                  <span style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Cloud Locker</span>
+                  <span style="font-size: 15px; font-weight: 800;" id="storage-fraction">0 / 100 Scripts</span>
                 </div>
                 <div class="storage-bar-wrap">
                   <div class="storage-bar" id="storage-bar"></div>
                 </div>
               </div>
-              <p style="font-size: 11px; color: var(--text-muted);">Standard developer accounts are limited to 20 scripts.</p>
+              <p style="font-size: 11px; color: var(--text-muted);">Your account space supports up to 100 script hosting slots.</p>
             </div>
 
-            <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Stored Scripts</h3>
+            <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Stored Scripts</h3>
             <div class="script-list" id="my-scripts">
               <div style="text-align: center; color: var(--text-muted); padding: 30px; border: 1px dashed var(--border-color); border-radius: 4px; font-size: 12px;">
                 No scripts uploaded yet.
@@ -1128,11 +1138,60 @@
       </div>
     </div>
 
+    <!-- VIEW: KEYS (LICENSING PANEL - NEW FEATURE!) -->
+    <div id="page-keys" class="view-page">
+      <div style="display: grid; grid-template-columns: 1fr 340px; gap: 32px;">
+        <!-- Left: Active keys -->
+        <div class="card" style="padding: 24px;">
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Active Whitelist Licenses</h3>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>License Key</th>
+                  <th>Associated Script</th>
+                  <th>Device lock (HWID)</th>
+                  <th>Expiration Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="whitelist-keys-table">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Create Key Form -->
+        <div class="card" style="padding: 24px;">
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Generate Key</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">Generate a new whitelisting credential for your hosted script. The key locks to the client's hardware ID upon execution.</p>
+          
+          <div class="form-group">
+            <label class="form-label">Select Script Target</label>
+            <select id="key-script-select" class="form-input" style="background-color: #050505; color: white;">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Expiration Period (Days)</label>
+            <input type="number" id="key-expires-days" class="form-input" value="30" placeholder="e.g. 30">
+          </div>
+
+          <button class="btn" style="width: 100%; justify-content: center;" onclick="handleGenerateKey()">
+            <span>Generate Whitelist Key</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- VIEW: REFERRALS -->
     <div id="page-referrals" class="view-page">
       <div class="ref-header-card">
         <span class="hero-badge">Referrals</span>
-        <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 15px; letter-spacing: -0.5px;">Karmaforges Referral Node</h2>
+        <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 15px; letter-spacing: -0.5px;">Karma Referral Node</h2>
         <p style="color: var(--text-muted); max-width: 580px; margin: 0 auto; font-size: 14px; line-height: 1.6;">Invite developers to lock and host their scripts. New registrations using your unique key receive bonus credits, and your node is credited upon account generation.</p>
         
         <div class="ref-link-box">
@@ -1161,10 +1220,10 @@
       </div>
 
       <div class="card">
-        <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;">Reference Guidelines</h3>
+        <h3 style="font-size: 14px; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;">Reference Guidelines</h3>
         <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: var(--text-main); line-height: 1.6;">
           <li>Copy your unique invite link shown above.</li>
-          <li>When clicked, visiting users are tagged with your profile and see a "Sign up requested by your username" greeting.</li>
+          <li>When clicked, visiting users are tagged with your profile and see a "Signup requested by your username" greeting.</li>
           <li>After successful account setup, your referred friend receives 50 credits, and your account gains 100 credits instantly.</li>
         </ol>
       </div>
@@ -1272,76 +1331,22 @@
 
   </main>
 
-  <!-- AUTH MODAL -->
-  <div class="modal-overlay" id="auth-modal" onclick="closeAuthModal(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <span class="modal-close" onclick="closeAuthModal()">✕</span>
-      <h2 class="modal-title" id="auth-modal-title">Sign In</h2>
-      <p class="modal-desc" id="auth-modal-desc">Sign in to start uploading and obfuscating your scripts.</p>
-
-      <!-- Referral banner in signup -->
-      <div class="signup-invite-banner" id="modal-referral-banner" style="display: none;">
-        <span>Sign up requested by <strong id="modal-referral-username">friend</strong>.</span>
-      </div>
-
-      <!-- Sign In Fields -->
-      <div id="signin-fields">
-        <div class="form-group">
-          <label class="form-label">Email or Username</label>
-          <input type="text" id="signin-login" class="form-input" placeholder="username or email">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" id="signin-password" class="form-input" placeholder="••••••••">
-        </div>
-        <button class="btn" style="width: 100%; margin-top: 10px; justify-content: center;" id="btn-signin" onclick="submitSignIn()">
-          <span>Sign In</span>
-        </button>
-        <p style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--text-muted);">
-          Don't have an account? <a href="#" style="color: var(--text-main); font-weight: 700; text-decoration: none;" onclick="toggleAuthMode('signup')">Sign Up</a>
-        </p>
-      </div>
-
-      <!-- Sign Up Fields -->
-      <div id="signup-fields" style="display: none;">
-        <div class="form-group">
-          <label class="form-label">Username</label>
-          <input type="text" id="signup-username" class="form-input" placeholder="username">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" id="signup-email" class="form-input" placeholder="email@domain.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" id="signup-password" class="form-input" placeholder="••••••••">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Referral Code (Optional)</label>
-          <input type="text" id="signup-referral" class="form-input" placeholder="referrer username">
-        </div>
-        <button class="btn" style="width: 100%; margin-top: 10px; justify-content: center;" id="btn-signup" onclick="submitSignUp()">
-          <span>Create Account</span>
-        </button>
-        <p style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--text-muted);">
-          Already have an account? <a href="#" style="color: var(--text-main); font-weight: 700; text-decoration: none;" onclick="toggleAuthMode('signin')">Sign In</a>
-        </p>
-      </div>
-    </div>
-  </div>
-
   <div class="toast-container" id="toast-container"></div>
 
   <script>
-    // HARDCODED PRODUCTION BACKEND URL - Auto-connects your Pages site to Render out-of-the-box!
+    // HARDCODED PRODUCTION BACKEND URL
     const BACKEND_URL = 'https://karma-hosting.onrender.com';
     localStorage.setItem('karma_backend_url', BACKEND_URL);
+
+    // Discord Application Credentials
+    const DISCORD_CLIENT_ID = '1524112001394282616';
 
     // Front-end State & Router
     let appState = {
       isMockMode: false,
-      user: null, // Logged in user details
+      user: null, 
       scripts: [],
+      keys: [], // whitelist keys array
       editingScriptId: null,
       admin: {
         stats: null,
@@ -1350,18 +1355,16 @@
       }
     };
 
-    // Centralized API Fetch Helper (Supports cross-domain hosting e.g. Cloudflare Pages + Render Node)
+    // Centralized API Fetch Helper
     async function apiFetch(path, options = {}) {
       const backendUrl = localStorage.getItem('karma_backend_url') || BACKEND_URL;
       const fullUrl = `${backendUrl.replace(/\/$/, '')}${path}`;
       
-      // Merge headers
       options.headers = options.headers || {};
       if (!(options.body instanceof FormData)) {
         options.headers['Content-Type'] = options.headers['Content-Type'] || 'application/json';
       }
       
-      // Inject Authorization Header token
       const token = localStorage.getItem('auth_token');
       if (token) {
         options.headers['Authorization'] = `Bearer ${token}`;
@@ -1371,15 +1374,53 @@
       return fetch(fullUrl, options);
     }
 
+    // Trigger Discord OAuth Redirection (Faulmor Style login!)
+    function redirectToDiscordAuth() {
+      if (appState.isMockMode) {
+        // If local offline preview, mock login instantly!
+        mockDiscordLogin();
+        return;
+      }
+      
+      const currentOrigin = window.location.origin;
+      const redirectUri = `${currentOrigin}/api/auth/discord/callback`;
+      const authUrl = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify+email`;
+      
+      window.location.href = authUrl;
+    }
+
+    function mockDiscordLogin() {
+      const mockUser = {
+        id: 'ur-1',
+        email: 'owner@karmaforges.com',
+        username: 'owner',
+        avatar: '',
+        credits: 1250,
+        isOwner: true
+      };
+      
+      appState.user = mockUser;
+      localStorage.setItem('karma_mock_session', mockUser.id);
+      updateAuthUI();
+      mockLoadScripts();
+      mockLoadKeys();
+      showToast('Offline Mock login successful with Discord!', 'success');
+      navigateTo('dashboard');
+    }
+
     // Initialize Page load
     window.addEventListener('DOMContentLoaded', async () => {
-      // Check referral cookie from URL
+      // Check query parameter tokens (if redirected back from backend)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get('token');
+      if (urlToken) {
+        localStorage.setItem('auth_token', urlToken);
+        // Clear token parameter from browser URL without reloading
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
       checkReferralCookie();
-
-      // Try checking session to verify live connection
       await checkActiveSession();
-
-      // Read state
       updateLineNumbers();
     });
 
@@ -1401,16 +1442,18 @@
           
           updateAuthUI();
           await fetchScripts();
+          await fetchKeys();
           if (appState.user.isOwner) {
             await fetchAdminData();
           }
+          showToast('Connected to Karma Lua Hosting Cloud Node', 'success');
+          navigateTo('dashboard');
         } else {
           appState.isMockMode = false;
           document.getElementById('preview-mode-banner').style.display = 'none';
           updateAuthUI();
         }
       } catch (err) {
-        // Fallback to fully functional Mock Mode inside preview if server is starting or offline
         statusDot.classList.remove('active');
         statusText.textContent = "Offline/Mock Environment";
         enableMockMode();
@@ -1429,16 +1472,10 @@
       }
 
       if (referredBy) {
-        // Display top requested banner (Emojis removed)
         const refBanner = document.getElementById('referral-welcome-banner');
         const refText = document.getElementById('referral-welcome-text');
         refText.innerHTML = `Signup requested by your friend <strong>${referredBy}</strong>. Complete registration to receive 50 bonus credits.`;
         refBanner.style.display = 'flex';
-        
-        // Auto fill modal referral code
-        document.getElementById('signup-referral').value = referredBy;
-        document.getElementById('modal-referral-username').textContent = referredBy;
-        document.getElementById('modal-referral-banner').style.display = 'flex';
       }
     }
 
@@ -1463,6 +1500,8 @@
 
       if (pageId === 'dashboard') {
         fetchScripts();
+      } else if (pageId === 'keys') {
+        fetchKeys();
       } else if (pageId === 'referrals') {
         updateReferralsPage();
       } else if (pageId === 'admin') {
@@ -1475,20 +1514,11 @@
       document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function handleGetStarted() {
-      if (appState.user) {
-        navigateTo('dashboard');
-      } else {
-        openAuthModal('signup');
-      }
-    }
-
     // --- MOCK MODE FOR IN-APP PREVIEWS ---
     function enableMockMode() {
       appState.isMockMode = true;
       document.getElementById('preview-mode-banner').style.display = 'flex';
       
-      // Initialize mock db in LocalStorage
       if (!localStorage.getItem('karma_mock_users')) {
         localStorage.setItem('karma_mock_users', JSON.stringify([
           { id: 'ur-1', email: 'owner@karmaforges.com', username: 'owner', password: 'password', credits: 1250, referredBy: null, createdAt: new Date().toISOString() },
@@ -1498,12 +1528,12 @@
           { id: 'ow-1', email: 'owner@karmaforges.com', username: 'owner', createdAt: new Date().toISOString() }
         ]));
         localStorage.setItem('karma_mock_scripts', JSON.stringify([
-          { id: 'sc-mock1', userId: 'ur-1', name: 'Blox Fruits Auto Farm', description: 'Auto quests, teleports and mob farms', code: "print('Blox Fruits Script Running!')", obfuscatedCode: "-- Obfuscated by Kers0ne\nprint('Blox Fruits Script Running!')", obfuscated: true, createdAt: new Date().toISOString() },
-          { id: 'sc-mock2', userId: 'ur-1', name: 'Fly & Speed Script', description: 'Bypass speed/flight kick detection', code: "print('Fly script active')", obfuscatedCode: "", obfuscated: false, createdAt: new Date().toISOString() }
+          { id: 'sc-mock1', userId: 'ur-1', name: 'Blox Fruits Auto Farm', description: 'Auto farm, infinite items, secure keys whitelisted', code: "print('Blox Fruits Running')", createdAt: new Date().toISOString() }
         ]));
-        localStorage.setItem('karma_mock_referrals', JSON.stringify([
-          { id: 'ref-1', referrerId: 'ur-1', referrerName: 'owner', referredId: 'ur-2', referredName: 'friend_one', creditsAwarded: 100, createdAt: new Date().toISOString() }
+        localStorage.setItem('karma_mock_keys', JSON.stringify([
+          { id: 'ky-mock1', userId: 'ur-1', scriptId: 'sc-mock1', scriptName: 'Blox Fruits Auto Farm', keyString: 'KARMA-A4E2-F9B2-C1D3', hwid: 'F9B02D3C4E5F6A', status: 'active', expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), createdAt: new Date().toISOString() }
         ]));
+        localStorage.setItem('karma_mock_referrals', JSON.stringify([]));
       }
 
       const cachedUserId = localStorage.getItem('karma_mock_session');
@@ -1520,6 +1550,7 @@
           };
           updateAuthUI();
           mockLoadScripts();
+          mockLoadKeys();
         }
       }
     }
@@ -1536,6 +1567,13 @@
       const allScripts = JSON.parse(localStorage.getItem('karma_mock_scripts') || '[]');
       appState.scripts = allScripts.filter(s => s.userId === appState.user.id);
       renderScripts();
+      populateScriptDropdowns();
+    }
+
+    function mockLoadKeys() {
+      const allKeys = JSON.parse(localStorage.getItem('karma_mock_keys') || '[]');
+      appState.keys = allKeys.filter(k => k.userId === appState.user.id);
+      renderKeys();
     }
 
     // --- REAL / MOCK SCRIPTS LOADER ---
@@ -1550,15 +1588,16 @@
         if (res.ok) {
           appState.scripts = await res.json();
           renderScripts();
+          populateScriptDropdowns();
         }
       } catch (err) {
-        showToast('Error loading scripts from server', 'error');
+        showToast('Error loading scripts', 'error');
       }
     }
 
     function renderScripts() {
       const container = document.getElementById('my-scripts');
-      const limit = 20;
+      const limit = 100;
       const count = appState.scripts.length;
       document.getElementById('storage-fraction').textContent = `${count} / ${limit} Scripts`;
       
@@ -1576,9 +1615,7 @@
       }
 
       container.innerHTML = appState.scripts.map(s => {
-        const isObf = s.obfuscated;
         const currentDomain = localStorage.getItem('karma_backend_url') || BACKEND_URL;
-        const loadstringSnippet = `loadstring(game:HttpGet("${currentDomain.replace(/\/$/, '')}/raw/${s.id}"))()`;
         
         return `
           <div class="script-item">
@@ -1586,12 +1623,11 @@
               <div class="script-name">${escapeHTML(s.name)}</div>
               <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">${escapeHTML(s.description || 'No description.')}</div>
               <div class="script-meta">
-                <span class="${isObf ? 'badge-obf' : 'badge-raw'}">${isObf ? 'Obfuscated' : 'Raw Script'}</span>
+                <span class="badge-raw">Locker Active</span>
                 <span>Date: ${new Date(s.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
             <div class="script-actions">
-              <button class="btn btn-secondary btn-sm" onclick="copyLoadstring('${s.id}')">Copy Loadstring</button>
               <button class="btn btn-secondary btn-sm" onclick="startEditScript('${s.id}')">Edit</button>
               <button class="btn btn-danger btn-sm" onclick="handleDeleteScript('${s.id}')">Delete</button>
             </div>
@@ -1600,11 +1636,223 @@
       }).join('');
     }
 
-    function copyLoadstring(scriptId) {
+    function populateScriptDropdowns() {
+      const select = document.getElementById('key-script-select');
+      if (appState.scripts.length === 0) {
+        select.innerHTML = `<option value="">No scripts hosted yet</option>`;
+        return;
+      }
+      select.innerHTML = appState.scripts.map(s => `<option value="${s.id}">${escapeHTML(s.name)}</option>`).join('');
+    }
+
+    // --- WHITELIST LICENSING PANEL (NEW FEATURE!) ---
+    async function fetchKeys() {
+      if (appState.isMockMode) {
+        mockLoadKeys();
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/api/keys');
+        if (res.ok) {
+          appState.keys = await res.json();
+          renderKeys();
+        }
+      } catch (err) {
+        showToast('Error loading whitelisting keys', 'error');
+      }
+    }
+
+    function renderKeys() {
+      const container = document.getElementById('whitelist-keys-table');
+      if (appState.keys.length === 0) {
+        container.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No licenses generated yet.</td></tr>`;
+        return;
+      }
+
+      container.innerHTML = appState.keys.map(k => {
+        const isRevoked = k.status === 'revoked';
+        const currentDomain = localStorage.getItem('karma_backend_url') || BACKEND_URL;
+        
+        // Loader loadstring syntax with safe locked key + hardware parameter!
+        const loaderSnippet = `loadstring(game:HttpGet("${currentDomain}/raw/${k.scriptId}?key=${k.keyString}&hwid=" .. game:GetService("RbxAnalyticsService"):GetClientId()))()`;
+        
+        return `
+          <tr>
+            <td>
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span style="font-family: monospace; font-weight: 700; color: white;">${k.keyString}</span>
+                <span style="font-size: 10px; color: var(--text-muted); cursor: pointer;" onclick="copyLoaderCode('${k.keyString}', '${k.scriptId}')">Copy Loader</span>
+              </div>
+            </td>
+            <td><strong>${escapeHTML(k.scriptName)}</strong></td>
+            <td><span style="font-family: monospace; font-size: 11px;">${k.hwid || `<span style="color: var(--text-muted);">Not Locked Yet</span>`}</span></td>
+            <td><span style="font-size: 11px; color: var(--text-muted);">${new Date(k.expiresAt).toLocaleDateString()}</span></td>
+            <td>
+              <span style="font-size: 10px; text-transform: uppercase; font-weight: 700; color: ${isRevoked ? 'var(--error)' : 'var(--accent-primary)'};">
+                ${k.status}
+              </span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn btn-secondary btn-sm" onclick="toggleKeyStatus('${k.id}', '${k.status}')">
+                  ${isRevoked ? 'Enable' : 'Revoke'}
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="resetKeyHwid('${k.id}')">Reset HWID</button>
+                <button class="btn btn-danger btn-sm" style="padding: 4px 8px;" onclick="handleDeleteKey('${k.id}')">X</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function copyLoaderCode(keyString, scriptId) {
       const currentDomain = localStorage.getItem('karma_backend_url') || BACKEND_URL;
-      const snippet = `loadstring(game:HttpGet("${currentDomain.replace(/\/$/, '')}/raw/${scriptId}"))()`;
-      navigator.clipboard.writeText(snippet);
-      showToast('Loadstring copied to clipboard', 'success');
+      const loaderSnippet = `loadstring(game:HttpGet("${currentDomain}/raw/${scriptId}?key=${keyString}&hwid=" .. game:GetService("RbxAnalyticsService"):GetClientId()))()`;
+      navigator.clipboard.writeText(loaderSnippet);
+      showToast('Secure Loader copied to clipboard!', 'success');
+    }
+
+    async function handleGenerateKey() {
+      const scriptId = document.getElementById('key-script-select').value;
+      const expiresDays = document.getElementById('key-expires-days').value.trim();
+
+      if (!scriptId) {
+        showToast('Please select a target script first!', 'warning');
+        return;
+      }
+
+      if (appState.isMockMode) {
+        const allKeys = JSON.parse(localStorage.getItem('karma_mock_keys') || '[]');
+        const script = appState.scripts.find(s => s.id === scriptId);
+        
+        const randBlock = () => Math.random().toString(36).substr(2, 4).toUpperCase();
+        const keyString = `KARMA-${randBlock()}-${randBlock()}-${randBlock()}`;
+
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + (Number(expiresDays) || 30));
+
+        const newKey = {
+          id: 'ky-' + Math.random().toString(36).substr(2, 9),
+          userId: appState.user.id,
+          scriptId: scriptId,
+          scriptName: script ? script.name : 'Unknown Script',
+          keyString: keyString,
+          hwid: '',
+          status: 'active',
+          expiresAt: expiresAt.toISOString(),
+          createdAt: new Date().toISOString()
+        };
+
+        allKeys.push(newKey);
+        localStorage.setItem('karma_mock_keys', JSON.stringify(allKeys));
+        showToast('Key generated successfully!', 'success');
+        mockLoadKeys();
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/api/keys', {
+          method: 'POST',
+          body: JSON.stringify({ scriptId, expiresDays })
+        });
+
+        if (res.ok) {
+          showToast('Key generated successfully!', 'success');
+          await fetchKeys();
+        } else {
+          showToast('Failed to generate whitelisting key', 'error');
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
+    }
+
+    async function toggleKeyStatus(keyId, currentStatus) {
+      const newStatus = currentStatus === 'active' ? 'revoked' : 'active';
+
+      if (appState.isMockMode) {
+        const allKeys = JSON.parse(localStorage.getItem('karma_mock_keys') || '[]');
+        const idx = allKeys.findIndex(k => k.id === keyId);
+        if (idx !== -1) {
+          allKeys[idx].status = newStatus;
+          localStorage.setItem('karma_mock_keys', JSON.stringify(allKeys));
+          showToast(`License key is now ${newStatus}`, 'success');
+          mockLoadKeys();
+        }
+        return;
+      }
+
+      try {
+        const res = await apiFetch(`/api/keys/${keyId}`, {
+          method: 'PUT',
+          body: JSON.stringify({ status: newStatus })
+        });
+
+        if (res.ok) {
+          showToast(`License key is now ${newStatus}`, 'success');
+          await fetchKeys();
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
+    }
+
+    async function resetKeyHwid(keyId) {
+      if (!confirm('Are you sure you want to clear this key\'s hardware lock?')) return;
+
+      if (appState.isMockMode) {
+        const allKeys = JSON.parse(localStorage.getItem('karma_mock_keys') || '[]');
+        const idx = allKeys.findIndex(k => k.id === keyId);
+        if (idx !== -1) {
+          allKeys[idx].hwid = '';
+          localStorage.setItem('karma_mock_keys', JSON.stringify(allKeys));
+          showToast('Hardware device lock reset', 'success');
+          mockLoadKeys();
+        }
+        return;
+      }
+
+      try {
+        const res = await apiFetch(`/api/keys/${keyId}`, {
+          method: 'PUT',
+          body: JSON.stringify({ resetHwid: true })
+        });
+
+        if (res.ok) {
+          showToast('Hardware device lock reset', 'success');
+          await fetchKeys();
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
+    }
+
+    async function handleDeleteKey(keyId) {
+      if (!confirm('Are you sure you want to delete this key?')) return;
+
+      if (appState.isMockMode) {
+        let allKeys = JSON.parse(localStorage.getItem('karma_mock_keys') || '[]');
+        allKeys = allKeys.filter(k => k.id !== keyId);
+        localStorage.setItem('karma_mock_keys', JSON.stringify(allKeys));
+        showToast('Key deleted successfully', 'success');
+        mockLoadKeys();
+        return;
+      }
+
+      try {
+        const res = await apiFetch(`/api/keys/${keyId}`, {
+          method: 'DELETE'
+        });
+
+        if (res.ok) {
+          showToast('Key deleted successfully', 'success');
+          await fetchKeys();
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
     }
 
     // --- UPLOAD / EDIT SCRIPT ---
@@ -1612,7 +1860,6 @@
       const name = document.getElementById('script-name').value.trim();
       const description = document.getElementById('script-desc').value.trim();
       const code = document.getElementById('script-code').value;
-      const enableObfuscate = document.getElementById('enable-obfuscate').checked;
 
       if (!name || !code) {
         showToast('Script Name and Lua Code are required', 'error');
@@ -1628,53 +1875,14 @@
         setTimeout(() => {
           const allScripts = JSON.parse(localStorage.getItem('karma_mock_scripts') || '[]');
           
-          if (!appState.editingScriptId && allScripts.filter(s => s.userId === appState.user.id).length >= 20) {
-            showToast('Storage limit reached (20 scripts max)', 'error');
+          if (!appState.editingScriptId && allScripts.filter(s => s.userId === appState.user.id).length >= 100) {
+            showToast('Storage limit reached (100 scripts max)', 'error');
             saveBtn.disabled = false;
             saveBtn.innerHTML = originalText;
             return;
           }
 
           let scriptObj;
-          let mockObfCode = '';
-          
-          if (enableObfuscate) {
-            const keyStr = Array.from({length: 8}, () => Math.floor(Math.random() * 256)).join(',');
-            mockObfCode = `--[[
-\tProtected By Kers0ne (Karmaforges Anti-Deobfuscate Shield)
-]]
-return(function(...)
-\tlocal K={${keyStr}}
-\tlocal D="\\117\\092\\111\\108\\123\\104\\032"
-\tlocal B,C=string.byte,string.char
-\t
-\t-- Hook detection
-\tlocal is_hooked = false
-\tlocal real_load = loadstring or load
-\tif debug and debug.getinfo then
-\t\tif debug.getinfo(real_load).what == "Lua" then is_hooked = true end
-\t\tif debug.getinfo(print).what == "Lua" then is_hooked = true end
-\tend
-\tif not tostring(real_load):find("function") then is_hooked = true end
-\t
-\tlocal f = function(src)
-\t\tif is_hooked then
-\t\t\tspawn(function()
-\t\t\t\twhile true do
-\t\t\t\t\tprint("skidder")
-\t\t\t\t\ttask.wait(0.2)
-\t\t\t\tend
-\t\t\tend)
-\t\t\treturn real_load("while true do print('skidder') task.wait(1) end")
-\t\telse
-\t\t\treturn real_load(src)
-\t\tend
-\tend
-
-\tprint("Secure loading...")
-\treturn f("print('skidder_blocked')")(...)
-end)(...)`;
-          }
 
           if (appState.editingScriptId) {
             const index = allScripts.findIndex(s => s.id === appState.editingScriptId);
@@ -1683,9 +1891,7 @@ end)(...)`;
                 ...allScripts[index],
                 name,
                 description,
-                code,
-                obfuscatedCode: mockObfCode,
-                obfuscated: enableObfuscate
+                code
               };
               scriptObj = allScripts[index];
             }
@@ -1696,8 +1902,6 @@ end)(...)`;
               name,
               description,
               code,
-              obfuscatedCode: mockObfCode,
-              obfuscated: enableObfuscate,
               createdAt: new Date().toISOString()
             };
             allScripts.push(scriptObj);
@@ -1707,16 +1911,7 @@ end)(...)`;
           saveBtn.disabled = false;
           saveBtn.innerHTML = originalText;
           
-          showToast(appState.editingScriptId ? 'Script updated' : 'Script uploaded to storage', 'success');
-          
-          if (enableObfuscate) {
-            document.getElementById('output-code-box').textContent = mockObfCode;
-            document.getElementById('output-section').style.display = 'block';
-            document.getElementById('output-section').scrollIntoView({ behavior: 'smooth' });
-          } else {
-            document.getElementById('output-section').style.display = 'none';
-          }
-
+          showToast(appState.editingScriptId ? 'Script updated' : 'Script uploaded to cloud', 'success');
           resetEditor();
           mockLoadScripts();
         }, 800);
@@ -1727,7 +1922,7 @@ end)(...)`;
       // Real Server API Call
       try {
         let res, data;
-        const bodyPayload = { name, description, code, enableObfuscate };
+        const bodyPayload = { name, description, code };
 
         if (appState.editingScriptId) {
           res = await apiFetch(`/api/scripts/${appState.editingScriptId}`, {
@@ -1744,15 +1939,6 @@ end)(...)`;
         if (res.ok) {
           data = await res.json();
           showToast(appState.editingScriptId ? 'Script updated' : 'Script uploaded', 'success');
-          
-          if (data.obfuscated && data.obfuscatedCode) {
-            document.getElementById('output-code-box').textContent = data.obfuscatedCode;
-            document.getElementById('output-section').style.display = 'block';
-            document.getElementById('output-section').scrollIntoView({ behavior: 'smooth' });
-          } else {
-            document.getElementById('output-section').style.display = 'none';
-          }
-
           resetEditor();
           await fetchScripts();
         } else {
@@ -1776,7 +1962,6 @@ end)(...)`;
       document.getElementById('script-name').value = script.name;
       document.getElementById('script-desc').value = script.description || '';
       document.getElementById('script-code').value = script.code;
-      document.getElementById('enable-obfuscate').checked = script.obfuscated;
       
       document.getElementById('btn-save-script').innerHTML = `<span>Save Changes</span>`;
       document.getElementById('btn-cancel-edit').style.display = 'inline-flex';
@@ -1792,7 +1977,6 @@ end)(...)`;
       document.getElementById('script-name').value = '';
       document.getElementById('script-desc').value = '';
       document.getElementById('script-code').value = '';
-      document.getElementById('enable-obfuscate').checked = true;
       
       document.getElementById('btn-save-script').innerHTML = `<span>Save & Host Script</span>`;
       document.getElementById('btn-cancel-edit').style.display = 'none';
@@ -1853,202 +2037,6 @@ end)(...)`;
       showToast('Referral link copied', 'success');
     }
 
-    // --- AUTHENTICATION DIALOGS ---
-    function openAuthModal(mode) {
-      const modal = document.getElementById('auth-modal');
-      modal.classList.add('active');
-      toggleAuthMode(mode);
-    }
-
-    function closeAuthModal(e) {
-      if (!e || e.target === document.getElementById('auth-modal') || e.target.classList.contains('modal-close')) {
-        document.getElementById('auth-modal').classList.remove('active');
-      }
-    }
-
-    function toggleAuthMode(mode) {
-      const title = document.getElementById('auth-modal-title');
-      const desc = document.getElementById('auth-modal-desc');
-      const signinFields = document.getElementById('signin-fields');
-      const signupFields = document.getElementById('signup-fields');
-
-      if (mode === 'signup') {
-        title.textContent = "Sign Up";
-        desc.textContent = "Create an account to host up to 20 scripts on our cloud servers.";
-        signinFields.style.display = 'none';
-        signupFields.style.display = 'block';
-      } else {
-        title.textContent = "Sign In";
-        desc.textContent = "Log in to access your script locker and cloud dashboard.";
-        signinFields.style.display = 'block';
-        signupFields.style.display = 'none';
-      }
-    }
-
-    async function submitSignIn() {
-      const loginIdentifier = document.getElementById('signin-login').value.trim();
-      const password = document.getElementById('signin-password').value;
-
-      if (!loginIdentifier || !password) {
-        showToast('Please fill in all fields', 'warning');
-        return;
-      }
-
-      if (appState.isMockMode) {
-        const users = JSON.parse(localStorage.getItem('karma_mock_users'));
-        const user = users.find(u => 
-          (u.email.toLowerCase() === loginIdentifier.toLowerCase() || u.username.toLowerCase() === loginIdentifier.toLowerCase()) && 
-          u.password === password
-        );
-
-        if (user) {
-          appState.user = {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-            credits: user.credits,
-            isOwner: checkIsMockOwner(user.email, user.username)
-          };
-          localStorage.setItem('karma_mock_session', user.id);
-          updateAuthUI();
-          closeAuthModal();
-          showToast(`Welcome back, ${user.username}`, 'success');
-          navigateTo('dashboard');
-        } else {
-          showToast('Invalid email/username or password', 'error');
-        }
-        return;
-      }
-
-      try {
-        const res = await apiFetch('/api/auth/signin', {
-          method: 'POST',
-          body: JSON.stringify({ loginIdentifier, password })
-        });
-        
-        if (res.ok) {
-          const data = await res.json();
-          localStorage.setItem('auth_token', data.token);
-          appState.user = data.user;
-          updateAuthUI();
-          closeAuthModal();
-          showToast(`Signed in as ${appState.user.username}`, 'success');
-          navigateTo('dashboard');
-        } else {
-          const errData = await res.json();
-          showToast(errData.error || 'Sign in failed', 'error');
-        }
-      } catch (err) {
-        showToast('Network error during login', 'error');
-      }
-    }
-
-    async function submitSignUp() {
-      const username = document.getElementById('signup-username').value.trim();
-      const email = document.getElementById('signup-email').value.trim();
-      const password = document.getElementById('signup-password').value;
-      const referralCode = document.getElementById('signup-referral').value.trim();
-
-      if (!username || !email || !password) {
-        showToast('Please fill in all fields', 'warning');
-        return;
-      }
-
-      if (appState.isMockMode) {
-        const users = JSON.parse(localStorage.getItem('karma_mock_users'));
-        
-        if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-          showToast('Email already in use', 'error');
-          return;
-        }
-        if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-          showToast('Username already taken', 'error');
-          return;
-        }
-
-        let userCredits = 0;
-        let referrerObj = null;
-        if (referralCode) {
-          referrerObj = users.find(u => u.username.toLowerCase() === referralCode.toLowerCase());
-          if (referrerObj) {
-            userCredits = 50;
-          } else {
-            showToast('Referral code not found', 'warning');
-          }
-        }
-
-        const newUser = {
-          id: 'ur-' + Math.random().toString(36).substr(2, 9),
-          email,
-          username,
-          password,
-          credits: userCredits,
-          referredBy: referrerObj ? referrerObj.username : null,
-          createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        localStorage.setItem('karma_mock_users', JSON.stringify(users));
-
-        if (referrerObj) {
-          referrerObj.credits = (referrerObj.credits || 0) + 100;
-          localStorage.setItem('karma_mock_users', JSON.stringify(users));
-
-          const refs = JSON.parse(localStorage.getItem('karma_mock_referrals') || '[]');
-          refs.push({
-            id: 'ref-' + Math.random().toString(36).substr(2, 9),
-            referrerId: referrerObj.id,
-            referrerName: referrerObj.username,
-            referredId: newUser.id,
-            referredName: newUser.username,
-            creditsAwarded: 100,
-            createdAt: new Date().toISOString()
-          });
-          localStorage.setItem('karma_mock_referrals', JSON.stringify(refs));
-        }
-
-        appState.user = {
-          id: newUser.id,
-          email: newUser.email,
-          username: newUser.username,
-          credits: newUser.credits,
-          isOwner: checkIsMockOwner(newUser.email, newUser.username)
-        };
-
-        localStorage.setItem('karma_mock_session', newUser.id);
-        document.getElementById('referral-welcome-banner').style.display = 'none';
-
-        updateAuthUI();
-        closeAuthModal();
-        showToast('Account created', 'success');
-        navigateTo('dashboard');
-        return;
-      }
-
-      try {
-        const res = await apiFetch('/api/auth/signup', {
-          method: 'POST',
-          body: JSON.stringify({ username, email, password, referralCode })
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          localStorage.setItem('auth_token', data.token);
-          appState.user = data.user;
-          updateAuthUI();
-          closeAuthModal();
-          document.getElementById('referral-welcome-banner').style.display = 'none';
-          showToast('Account registered successfully', 'success');
-          navigateTo('dashboard');
-        } else {
-          const errData = await res.json();
-          showToast(errData.error || 'Sign up failed', 'error');
-        }
-      } catch (err) {
-        showToast('Network error during signup', 'error');
-      }
-    }
-
     async function handleSignOut() {
       if (appState.isMockMode) {
         localStorage.removeItem('karma_mock_session');
@@ -2078,6 +2066,7 @@ end)(...)`;
       const userProfile = document.getElementById('user-profile');
       
       const linkDashboard = document.getElementById('link-dashboard');
+      const linkKeys = document.getElementById('link-keys');
       const linkReferrals = document.getElementById('link-referrals');
       const linkAdmin = document.getElementById('link-admin');
 
@@ -2088,7 +2077,14 @@ end)(...)`;
         document.getElementById('profile-username').textContent = appState.user.username;
         document.getElementById('profile-credits').textContent = appState.user.credits || 0;
 
+        if (appState.user.avatar) {
+          const avImg = document.getElementById('profile-avatar');
+          avImg.src = appState.user.avatar;
+          avImg.style.display = 'block';
+        }
+
         linkDashboard.style.display = 'block';
+        linkKeys.style.display = 'block';
         linkReferrals.style.display = 'block';
         
         if (appState.user.isOwner) {
@@ -2099,8 +2095,10 @@ end)(...)`;
       } else {
         authButtons.style.display = 'flex';
         userProfile.style.display = 'none';
+        document.getElementById('profile-avatar').style.display = 'none';
 
         linkDashboard.style.display = 'none';
+        linkKeys.style.display = 'none';
         linkReferrals.style.display = 'none';
         linkAdmin.style.display = 'none';
       }
@@ -2410,12 +2408,6 @@ end)(...)`;
       reader.readAsText(file);
     }
 
-    function copyOutputCode() {
-      const code = document.getElementById('output-code-box').textContent;
-      navigator.clipboard.writeText(code);
-      showToast('Obfuscated code copied', 'success');
-    }
-
 
     // --- UTILITIES ---
     function escapeHTML(str) {
@@ -2450,5 +2442,5 @@ end)(...)`;
       }, 5000);
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a19b6a51dd83876a',t:'MTc4MzgxMDczMQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
