@@ -3,8 +3,6 @@ const https = require('https');
 function callKersOne(scriptContent) {
   return new Promise((resolve, reject) => {
     const url = 'https://kers0ne-0bf.lovable.app/_serverFn/43850e3d124e7e45b168745acce9e83274bc95c5f678db56b9bf7d4640d67aec';
-    
-    // Construct Seroval payload
     const payload = {
       "t": {
         "t": 10,
@@ -50,11 +48,7 @@ function callKersOne(scriptContent) {
     const req = https.request(url, options, (res) => {
       let body = '';
       res.setEncoding('utf8');
-      
-      res.on('data', (chunk) => {
-        body += chunk;
-      });
-      
+      res.on('data', (chunk) => { body += chunk; });
       res.on('end', () => {
         if (res.statusCode === 200) {
           try {
@@ -72,10 +66,7 @@ function callKersOne(scriptContent) {
       });
     });
 
-    req.on('error', (e) => {
-      reject(e);
-    });
-
+    req.on('error', (e) => { reject(e); });
     req.write(dataString);
     req.end();
   });
@@ -134,7 +125,6 @@ function injectAntiDeobfuscation(obfuscatedScript) {
   `;
 
   const targetPattern = /local\s+f\s*=\s*loadstring\s+or\s+load/;
-  
   if (targetPattern.test(obfuscatedScript)) {
     return obfuscatedScript.replace(targetPattern, antiDeobfCode);
   } else {
